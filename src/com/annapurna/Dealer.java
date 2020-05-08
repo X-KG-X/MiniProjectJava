@@ -2,16 +2,12 @@ package com.annapurna;
 
 import java.util.*;
 
-public class Dealer {
-    //STATIC FIELDS //TODO getNumberOfPlayers
+public class Dealer extends Player{
+    //STATIC FIELDS
     public static final String NAME="Polly";
-    public static final int MAX_PLAYERS=7;
-    public static final int MIN_PLAYERS=1;
 
     //INSTANT FIELDS
     private List<Card> deck= Deck.newDeck();
-    private int playerCount=1;
-    private List<Card> hand;
 
     //BUSINESS METHODS TODO Respond to HIT, STAND and also DEAL
     public Boolean shuffleDeck(){
@@ -24,9 +20,19 @@ public class Dealer {
         return result;
     }
 
+    public Boolean deal(List<Player> players){ // need the List of Players from game
+        boolean result=false;
+        int initialDeckSize= getDeck().size();
+        System.out.println(initialDeckSize+"--------");
+        for(var player: players){
+            player.getHand().add(getDeck().remove(0));
+        }
+        if(getDeck().size()==(initialDeckSize-players.size())){
+            result=true;
+        }
+        return result;
+    }
     
-
-
 
 
     //ACCESSOR METHODS
@@ -34,19 +40,13 @@ public class Dealer {
         return deck;
     }
 
-    public int getPlayerCount() {  //TODO get this info from Game class?
-        return playerCount;
+    @Override
+    public String getName() {
+        return NAME;
     }
 
-    public void setPlayerCount(int playerCount) {  //TODO set it in Game class?
-        if(playerCount<MIN_PLAYERS||playerCount>MAX_PLAYERS){
-            System.out.println("Valid number of players:["+ MIN_PLAYERS+", "+MAX_PLAYERS+"]. Please enter a valid number.");
-            throw new IllegalArgumentException("Valid number of players:["+ MIN_PLAYERS+", "+MAX_PLAYERS+"]. Please enter a valid number.");
-        }
-        else{
-            this.playerCount = playerCount;
-        }
-    }
+
+
 
 
 }
