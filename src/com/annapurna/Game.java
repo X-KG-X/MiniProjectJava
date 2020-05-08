@@ -9,7 +9,6 @@ public class Game {
         2. delegate dealer to firstDeal, and giveAdditional card according to hit() or stand() condition
         3. refer to the rule class to check the conditions
         4. main client facing class
-
     */
 
     //INSTANCE FIELDS
