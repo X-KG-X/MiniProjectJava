@@ -3,17 +3,30 @@ package com.annapurna;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.temporal.JulianFields;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class GameTest {
-    Game game1;
+    private Game game1;
+    private List<Player> players=new ArrayList<>();
 
     @Before
     public void setUp() {
-        game1= new Game();
+        players.add(new Player("KG"));
+        players.add(new Player("GG"));
+        game1= new Game(players);
+    }
+
+    @Test
+    public void testPlayerTurn(){
+        game1.getDealer().deal(players);
+        game1.playerTurn();
+        assertEquals(3,players.get(0).getHand().size());
+        System.out.println(players.get(0).getHand().toString());
     }
 
     @Test

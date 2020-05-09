@@ -35,10 +35,11 @@ public class Game {
     }
 
     //BUSINESS METHODS
-    public void play(String decision ){
+    public void playerTurn(){
         for(var player:players){
-            if(player.play(decision)){
+            if(player.hitOrStand()){
                 dealer.hit(player);
+                //TODO check total for win/lose in Rules
             }
         }
     }

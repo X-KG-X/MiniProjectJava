@@ -39,7 +39,13 @@ public class Card {
 
     //ACCESSOR METHODS
 
+    public Suit getSuit() {
+        return suit;
+    }
 
+    public Rank getRank() {
+        return rank;
+    }
 
 
     //OBJECT OVERRIDE

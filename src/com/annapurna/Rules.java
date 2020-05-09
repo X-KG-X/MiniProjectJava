@@ -1,5 +1,7 @@
 package com.annapurna;
 
+import java.util.List;
+
 public class Rules {
 
     /*TODO
@@ -10,4 +12,17 @@ public class Rules {
        5. ace 1 vs 11 player and dealer choice rule
 
     */
+
+    public Boolean check21(Player player){
+        boolean result=false;
+        int sum=0;
+        for(Card card:player.getHand()){
+            sum+=card.getRank().value();
+        }
+        if(sum>21){
+            result=true;
+        }
+        return result;
+    }
+
 }
