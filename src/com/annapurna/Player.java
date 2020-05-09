@@ -16,6 +16,13 @@ public class Player {
     }
 
     //BUSINESS METHODS TODO  hit(), stand()
+    public Boolean play(String decision){  //true for HIT and false for stand
+        boolean result=false;
+        if(decision.toUpperCase().equals("HIT")){
+            result=true;
+        }
+        return result;
+    }
 
 
 

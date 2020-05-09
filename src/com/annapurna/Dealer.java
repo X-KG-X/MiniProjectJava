@@ -10,6 +10,11 @@ public class Dealer extends Player{
     private List<Card> deck= Deck.newDeck();
 
     //BUSINESS METHODS TODO Respond to HIT, STAND and also DEAL
+    public void hit(Player player){
+        player.getHand().add(getDeck().remove(0));
+    }
+
+
     public Boolean shuffleDeck(){
         boolean result=false;
         List<Card> checkDeck=List.copyOf(this.getDeck());
@@ -20,14 +25,18 @@ public class Dealer extends Player{
         return result;
     }
 
+
+
     public Boolean deal(List<Player> players){ // need the List of Players from game
         boolean result=false;
         int initialDeckSize= getDeck().size();
         System.out.println(initialDeckSize+"--------");
-        for(var player: players){
-            player.getHand().add(getDeck().remove(0));
+        for(int i=0; i<2;i++) {
+            for (var player : players) {
+                player.getHand().add(getDeck().remove(0));
+            }
         }
-        if(getDeck().size()==(initialDeckSize-players.size())){
+        if(getDeck().size()==(initialDeckSize-players.size()*2)){
             result=true;
         }
         return result;

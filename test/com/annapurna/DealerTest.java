@@ -42,7 +42,6 @@ public class DealerTest {
     public void testDeal(){
         //Check that each player including the dealer has been given 2 cards in order
         assertTrue(dealer.deal(players));
-        assertTrue(dealer.deal(players));
         System.out.println(dealer.getDeck().size());
         System.out.println("-------------");
         System.out.println(players.get(0).getHand().toString());
