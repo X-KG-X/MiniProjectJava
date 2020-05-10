@@ -10,10 +10,12 @@ public class Dealer extends Player{
     private List<Card> deck= Deck.newDeck();
 
     //BUSINESS METHODS TODO Respond to HIT, STAND and also DEAL
-    public void hit(Player player){
+    public Boolean hit(Player player){
         if(player.hitOrStand()) {
             player.getHand().add(getDeck().remove(0));
+            return true;
         }
+        return false;
     }
 
 

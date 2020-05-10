@@ -1,20 +1,20 @@
 package com.annapurna.client;
 
-import com.annapurna.Dealer;
-import com.annapurna.Game;
-import com.annapurna.Player;
+import com.annapurna.*;
 
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameConsoleClient {
+    static Console console= System.console();
+
+
     public static void main(String[] args) {
         Game game=new Game();
         List<Player> players= new ArrayList<>();
         int playerCount;
 
-        Console console= System.console();
         if(console == null) {
             System.out.print("No console available");
             return;
@@ -51,7 +51,48 @@ public class GameConsoleClient {
 
         Game game1=new Game(players);
 
+        game1.dealer.shuffleDeck();
+        game1.dealer.deal(game1.getPlayers());
         System.out.println(game1.getPlayers());
+
+        Rules dealerRules= new DealerRules();
+        Rules playerRules= new PlayerRules();
+
+        for(Player player:game1.getPlayers()){
+            if(!player.isDealer()){
+                String status=playerRules.checkStatus(player);
+                if(status.equals("WIN")){
+                    System.out.println(player.getName()+ ", you got BlackJack. You win!");
+                    game1.getPlayers().remove(player);
+                    if(game1.getPlayers().size()==1){
+                        System.out.println("GAME OVER! GOOD BYE!");
+                    }
+                }
+                else if(status.equals("LOSE")){
+                    System.out.println(player.getName()+", sorry you lose.");
+                    game1.getPlayers().remove(player);
+                    if(game1.getPlayers().size()==1){
+                        System.out.println("DEALER WINS! GOOD BYE!");
+                    }
+                }
+                else{
+                    while(true){
+                        player.setPlay(Player.Play.valueOf(console.readLine(player.getName()+", "+"Enter [HIT, STAND] :")));
+                        boolean decision=game1.dealer.hit(player);
+                        if(!decision){
+                            System.out.println(player.getName()+" has decided to STAND.");
+                            break;
+                        }
+                        System.out.println(player.getName()+"'s hand"+player.getHand().toString()+" " + playerRules.checkStatus(player));
+                    }
+                }
+
+            }
+            else{
+                System.out.println(dealerRules.checkStatus(player));
+            }
+        }
+
 
 
 
@@ -76,4 +117,16 @@ public class GameConsoleClient {
 
 
     }
+
+//    while (true) {
+//        playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
+//        try {
+//            game.setPlayerCount(playerCount);
+//            break;
+//        }
+//        catch (IllegalArgumentException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        //TODO maybe add a catch to handle non-numeric entry
+//    }
 }
