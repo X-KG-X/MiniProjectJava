@@ -44,6 +44,14 @@ public class Player {
         this.play = play;
     }
 
+    public Boolean isDealer(){
+        boolean result=false;
+        if(getClass()==Dealer.class){
+            result=true;
+        }
+        return result;
+    }
+
     //OBJECT OVERRIDE
 
     @Override

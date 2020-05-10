@@ -27,7 +27,7 @@ public class Dealer extends Player{
 
 
 
-    public Boolean deal(List<Player> players){ // need the List of Players from game
+    public Boolean deal(List<Player> players){ // TODO find another way to pass list of players
         boolean result=false;
         int initialDeckSize= getDeck().size();
         for(int i=0; i<2;i++) {
@@ -37,8 +37,6 @@ public class Dealer extends Player{
         }
 
         //TODO check for black jack in Rules
-
-
 
         if(getDeck().size()==(initialDeckSize-players.size()*2)){
             result=true;

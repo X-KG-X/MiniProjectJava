@@ -18,14 +18,14 @@ public class GameClient {
         Dealer dealer= new Dealer();
         game1.setDealer(dealer);
 
-        game1.getDealer().shuffleDeck();
+        game1.dealer.shuffleDeck();
 
-        System.out.println(game1.getDealer().getDeck().get(0).toString());
+        System.out.println(game1.dealer.getDeck().get(0).toString());
 
-        game1.getDealer().deal(players);
+        game1.dealer.deal(players);
 
         System.out.println(players.get(0).getHand().toString());
-        System.out.println(game1.getDealer().getDeck().size());
+        System.out.println(game1.dealer.getDeck().size());
 
 
     }

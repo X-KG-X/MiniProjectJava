@@ -23,7 +23,7 @@ public class GameTest {
 
     @Test
     public void testPlayerTurn(){
-        game1.getDealer().deal(players);
+        game1.dealer.deal(players);
         game1.playerTurn();
         assertEquals(3,players.get(0).getHand().size());
         System.out.println(players.get(0).getHand().toString());

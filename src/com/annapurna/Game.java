@@ -20,7 +20,7 @@ public class Game {
     //INSTANCE FIELDS
     private int playerCount;
     private List<Player> players= new ArrayList<>();
-    private Dealer dealer= new Dealer();
+    public Dealer dealer= new Dealer();
 
 
     //CONSTRUCTORS
@@ -43,6 +43,7 @@ public class Game {
             }
         }
     }
+
 
     //ACCESSOR METHODS
 
@@ -68,9 +69,7 @@ public class Game {
         }
     }
 
-    public Dealer getDealer() {
-        return dealer;
-    }
+
 
     public void setDealer(Dealer dealer) {
         this.dealer = dealer;
