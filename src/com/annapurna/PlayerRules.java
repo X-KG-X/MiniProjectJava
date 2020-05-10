@@ -25,6 +25,14 @@ public class PlayerRules implements Rules {
 
     @Override
     public String checkStatus(Player player) {
-        return null;
+        String result="LIVE";
+        List<Integer> sumList=checkTotal(player);
+        if(sumList.get(0).equals(21)||sumList.get(1).equals(21)){
+            result="WIN";
+        }
+        else if(sumList.get(0)>21&&sumList.get(1)>21){
+            result="LOSE";
+        }
+        return result;
     }
 }

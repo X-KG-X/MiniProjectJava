@@ -11,7 +11,9 @@ public class Dealer extends Player{
 
     //BUSINESS METHODS TODO Respond to HIT, STAND and also DEAL
     public void hit(Player player){
-        player.getHand().add(getDeck().remove(0));
+        if(player.hitOrStand()) {
+            player.getHand().add(getDeck().remove(0));
+        }
     }
 
 
