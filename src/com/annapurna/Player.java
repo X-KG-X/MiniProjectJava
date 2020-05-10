@@ -30,7 +30,12 @@ public class Player {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(!name.isBlank()){
+            this.name = name;
+        }
+        else {
+            throw new IllegalArgumentException("Blank not excepted. Please enter valid name:");
+        }
     }
 
     public List<Card> getHand() {

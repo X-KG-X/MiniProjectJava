@@ -14,7 +14,7 @@ public class Game {
     */
 
     //STATIC FIELDS
-    public static final int MAX_PLAYERS=7;
+    public static final int MAX_PLAYERS=4;
     public static final int MIN_PLAYERS=1;
 
     //INSTANCE FIELDS
@@ -61,14 +61,13 @@ public class Game {
 
     public void setPlayerCount(int playerCount) {
         if(playerCount<MIN_PLAYERS||playerCount>MAX_PLAYERS){
-            System.out.println("Valid number of players:["+ MIN_PLAYERS+", "+MAX_PLAYERS+"]. Please enter a valid number.");
-            throw new IllegalArgumentException("Valid number of players:["+ MIN_PLAYERS+", "+MAX_PLAYERS+"]. Please enter a valid number.");
+//            System.out.println("Valid number of players:["+ MIN_PLAYERS+", "+MAX_PLAYERS+"]. Please enter a valid number.");
+            throw new IllegalArgumentException("Invalid entry: "+playerCount+"."+" Valid number of players =["+ MIN_PLAYERS+", "+MAX_PLAYERS+"].");
         }
         else{
             this.playerCount = playerCount+1;
         }
     }
-
 
 
     public void setDealer(Dealer dealer) {
