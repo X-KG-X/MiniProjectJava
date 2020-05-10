@@ -35,13 +35,24 @@ public class GameConsoleClient {
             //TODO maybe add a catch to handle non-numeric entry
         }
 
-//        while(true){
-//
-//
-//
-//        }
-//
-//        }
+
+        for(int i=0; i<playerCount;i++) {
+            Player player;
+            while (true) {
+                try {
+                    player = new Player(console.readLine("Enter player Name:"));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            players.add(player);
+        }
+
+        Game game1=new Game(players);
+
+        System.out.println(game1.getPlayers());
+
 
 
 //        List<Player> players= new ArrayList<>();
