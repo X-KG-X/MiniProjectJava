@@ -1,28 +1,31 @@
-package com.annapurna.client;
+package com.annapurna.ui;
 
 import com.annapurna.*;
 
 import java.io.Console;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameConsoleClient {
-    static Console console= System.console();
 
 
     public static void main(String[] args) {
-        Game game=new Game();
-        List<Player> players= new ArrayList<>();
-        int playerCount;
-
+        //Create Console
+        Console console= System.console();
         if(console == null) {
             System.out.print("No console available");
             return;
         }
 
+        //Welcome Message
         System.out.println("WELCOME TO ANNAPURNA CASINO. BLACKJACK ADAPTATION PRESENTED BY TEAM JAVA2K!");
         System.out.println();
 
+        //Create Game for playerCount Intake
+        Game game=new Game();
+        List<Player> players= new ArrayList<>();
+        int playerCount;
         while (true) {
             playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
             try {
@@ -35,7 +38,7 @@ public class GameConsoleClient {
             //TODO maybe add a catch to handle non-numeric entry
         }
 
-
+        //Create player list
         for(int i=0; i<playerCount;i++) {
             Player player;
             while (true) {
@@ -49,23 +52,33 @@ public class GameConsoleClient {
             players.add(player);
         }
 
+        //Create the actual game with the list of players creted
         Game game1=new Game(players);
 
+        //Call dealer to shuffle the deck
         game1.dealer.shuffleDeck();
-        game1.dealer.deal(game1.getPlayers());
-        System.out.println(game1.getPlayers());
 
+        //Call the dealer to deal the cards
+        game1.dealer.deal(game1.getPlayers());
+
+        //Display all players' hands
+        game1.getPlayers().forEach(player -> System.out.println(player.getName()+ " has "+ player.getHand().toString()));
+        System.out.println();
+
+        //Check the playerStatus and dealerStatus in accordance to their respective rules
         Rules dealerRules= new DealerRules();
         Rules playerRules= new PlayerRules();
 
+        //After the deal the dealer asks for each players action(HIT or STAND)
         for(Player player:game1.getPlayers()){
-            if(!player.isDealer()){
+            if(!player.isDealer()){ //checking to make sure the player is not the dealer
                 String status=playerRules.checkStatus(player);
                 if(status.equals("WIN")){
                     System.out.println(player.getName()+ ", you got BlackJack. You win!");
                     game1.getPlayers().remove(player);
                     if(game1.getPlayers().size()==1){
                         System.out.println("GAME OVER! GOOD BYE!");
+                        break;
                     }
                 }
                 else if(status.equals("LOSE")){
@@ -73,60 +86,30 @@ public class GameConsoleClient {
                     game1.getPlayers().remove(player);
                     if(game1.getPlayers().size()==1){
                         System.out.println("DEALER WINS! GOOD BYE!");
+                        break;
                     }
                 }
                 else{
-                    while(true){
+                    while(playerRules.checkStatus(player).equals("LIVE")){
                         player.setPlay(Player.Play.valueOf(console.readLine(player.getName()+", "+"Enter [HIT, STAND] :")));
                         boolean decision=game1.dealer.hit(player);
                         if(!decision){
                             System.out.println(player.getName()+" has decided to STAND.");
+                            System.out.println(player.getName()+", your current hand is: "+player.getHand());
                             break;
                         }
-                        System.out.println(player.getName()+"'s hand"+player.getHand().toString()+" " + playerRules.checkStatus(player));
+                        //TODO need to be able to call the win/lose code here
                     }
                 }
 
             }
-            else{
+            else{//TODO dealer automated actions
                 System.out.println(dealerRules.checkStatus(player));
             }
         }
 
-
-
-
-//        List<Player> players= new ArrayList<>();
-//        players.add(new Player("KG"));
-//        players.add(new Player("GG"));
-//        Game game1= new Game(players);
-//
-//        game1.dealer.shuffleDeck();
-//
-//        System.out.println(game1.dealer.getDeck().get(0).toString());
-//
-//        game1.dealer.deal(players);
-//
-//        for(var player: game1.getPlayers()){
-//
-//        }
-
-//
-//        System.out.println(players.get(0).getHand().toString());
-//        System.out.println(game1.dealer.getDeck().size());
-
-
+        //TODO is any other player is still standing then compare dealer car to them and give them a win or lose
     }
 
-//    while (true) {
-//        playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
-//        try {
-//            game.setPlayerCount(playerCount);
-//            break;
-//        }
-//        catch (IllegalArgumentException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        //TODO maybe add a catch to handle non-numeric entry
-//    }
+
 }
