@@ -11,7 +11,7 @@ public class PlayerRules implements Rules {
         Integer alternateSum=0;
         for(var card: player.getHand()){
             if (card.getRank()== Card.Rank.ACE){
-                alternateSum=+11;
+                alternateSum=+1;
             }
             else {
                 alternateSum+=card.getRank().value();

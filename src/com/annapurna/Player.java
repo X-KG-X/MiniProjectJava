@@ -1,7 +1,9 @@
 package com.annapurna;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Player {
 
@@ -82,4 +84,23 @@ public class Player {
         public boolean value(){ return value;}
 
     }
+
+    //OVERRIDES
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getHand());
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            Player that = (Player) obj;
+            return Objects.equals(getHand(), that.getHand());
+    }
+
+
 }

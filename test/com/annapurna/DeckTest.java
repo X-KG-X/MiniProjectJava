@@ -8,7 +8,6 @@ public class DeckTest {
 
     @Test
     public void testNewDeck() {
-        Deck deck1= new Deck();
 
         assertEquals(52,Deck.newDeck().size());
 

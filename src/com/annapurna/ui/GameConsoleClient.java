@@ -13,10 +13,10 @@ public class GameConsoleClient {
     static Game game1;
     static Rules playerRules=new PlayerRules();
     static Rules dealerRules=new DealerRules();
+    static List<Player> players= new ArrayList<>();
 
     public static void main(String[] args) {
         //Create Console
-//        Console console= System.console();
         if (console == null) {
             System.out.print("No console available");
             return;
@@ -28,7 +28,6 @@ public class GameConsoleClient {
         System.out.println();
 
         //Create Game for playerCount Intake
-        List<Player> players = new ArrayList<>();
         int playerCount;
         while (true) {
             playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
@@ -47,6 +46,7 @@ public class GameConsoleClient {
             while (true) {
                 try {
                     player = new Player(console.readLine("Enter player Name:"));
+                    System.out.println();
                     break;
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
@@ -55,7 +55,7 @@ public class GameConsoleClient {
             players.add(player);
         }
 
-        //Create the actual game with the list of players creted
+        //Create the actual game with the list of players created
         game1 = new Game(players);
 
         //Call dealer to shuffle the deck
@@ -65,7 +65,8 @@ public class GameConsoleClient {
         game1.dealer.deal(game1.getPlayers());
 
         //Display all players' hands
-        game1.getPlayers().forEach(player -> System.out.println(player.getName() + " has " + player.getHand().toString()));
+        game1.getPlayers().forEach(player -> System.out.println(player.getName() + " has " + player.getHand().toString()+"\n"));
+        System.out.println();
         System.out.println();
 
 
@@ -81,12 +82,14 @@ public class GameConsoleClient {
                 } else {
                     while (playerRules.checkStatus(player).equals("LIVE")) {
                         player.setPlay(Player.Play.valueOf(console.readLine(player.getName() + ", " + "Enter [HIT, STAND]:")));
+                        System.out.println();
                         boolean decision = game1.dealer.hit(player);
                         System.out.println(player.getName()+"   "+ player.getHand());
                         System.out.println();
                         if (!decision) {
                             System.out.println(player.getName() + " has decided to STAND.");
                             System.out.println(player.getName() + ", your current hand is: " + player.getHand());
+                            System.out.println();
                             break;
                         }
                         if(playerRules.checkStatus(player).equals("WIN")){
@@ -113,6 +116,13 @@ public class GameConsoleClient {
                         if(!decision){
                             //TODO compare all the remaining hands
                             System.out.println("Up next compare all the remaining hands!");
+                            compareLiveHands();
+                        }
+                        if(playerRules.checkStatus(player).equals("WIN")){
+                            dealerWin(player);
+                        }
+                        if(playerRules.checkStatus(player).equals("LOSE")){
+                            dealerLose(player);
                         }
                     }
                 }
@@ -122,6 +132,64 @@ public class GameConsoleClient {
         }
     }
         //TODO is any other player is still standing then compare dealer car to them and give them a win or lose
+
+    public static void compareLiveHands(){
+        players.forEach(player -> System.out.println(player.getName()+" has "+ player.getHand()));
+        System.out.println();
+        List<Integer> handTotals=new ArrayList<>();
+
+        for(Player player:players){
+            System.out.println(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
+                System.out.println(playerRules.checkTotal(player).size());
+                handTotals.add(Math.max(playerRules.checkTotal(player).get(0),playerRules.checkTotal(player).get(1)));
+            }
+            else{
+                System.out.println("0000000000000000000000000");
+                handTotals.add(playerRules.checkTotal(player).get(0));
+            }
+        }
+        System.out.println("------------------------XXXXXXXXXXXX");
+
+        //If dealer has the highest hand
+        if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
+            System.out.println("------------------------");
+
+            dealerWin(players.get(players.size()-1));
+        }
+
+        else{ //else everyone who have higher hand than dealer win
+            System.out.println("------------------------MMMMMMMMMM");
+
+            for(Player player:players){
+                System.out.println("------------------------111111111111");
+
+                if (playerRules.checkTotal(player).get(0)>playerRules.checkTotal(players.get(players.size()-1)).get(0)||playerRules.checkTotal(player).get(1)>playerRules.checkTotal(players.get(players.size()-1)).get(0)){
+                    doWin(player);
+                }
+                else if(playerRules.checkTotal(player).get(0)==playerRules.checkTotal(players.get(players.size()-1)).get(0)||playerRules.checkTotal(player).get(1)==playerRules.checkTotal(players.get(players.size()-1)).get(0)){
+                    doWin(player);
+                }
+                else{
+                    doLose(player);
+                }
+            }
+
+        }
+
+        System.exit(0);
+
+    }
+
+    public static int helperMax(List<Integer> handTotals){
+        int result=0;
+        for(var total:handTotals){
+            if(total>result){
+                result=total;
+            }
+        }
+        return result;
+    }
 
 
     public static void doWin(Player player){

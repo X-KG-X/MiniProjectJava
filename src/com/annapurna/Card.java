@@ -9,7 +9,7 @@ public class Card {
     // STATIC NESTED CLASSES
     public static enum Suit {HEART,SPADE,DIAMOND,CLUB}
     public static enum Rank{
-        ACE(1), //TODO Ace can be 11 or 1
+        ACE(11), //TODO Ace can be 11 or 1
         TWO(2),
         THREE(3),
         FOUR(4),
