@@ -11,12 +11,9 @@ public class GameConsoleClient {
     static Console console=System.console();
     static Game game= new Game();
     static Game game1;
-    static Rules playerRules=new PlayerRules();
-    static Rules dealerRules=new DealerRules();
     static List<Player> players= new ArrayList<>();
 
     public static void main(String[] args) {
-        //Create Console
         if (console == null) {
             System.out.print("No console available");
             return;
@@ -74,13 +71,13 @@ public class GameConsoleClient {
         for (Player player : game1.getPlayers()) {
             String status = null;
             if (!player.isDealer()) { //checking to make sure the player is not the dealer
-                status = playerRules.checkStatus(player);
+                status = player.checkStatus();
                 if (status.equals("WIN")) {
                     doWin(player);
                 } else if (status.equals("LOSE")) {
                     doLose(player);
                 } else {
-                    while (playerRules.checkStatus(player).equals("LIVE")) {
+                    while (player.checkStatus().equals("LIVE")) {
                         player.setPlay(Player.Play.valueOf(console.readLine(player.getName() + ", " + "Enter [HIT, STAND]:")));
                         System.out.println();
                         boolean decision = game1.dealer.hit(player);
@@ -92,18 +89,18 @@ public class GameConsoleClient {
                             System.out.println();
                             break;
                         }
-                        if(playerRules.checkStatus(player).equals("WIN")){
+                        if(player.checkStatus().equals("WIN")){
                             doWin(player);
                         }
-                        if(playerRules.checkStatus(player).equals("LOSE")){
+                        if(player.checkStatus().equals("LOSE")){
                             doLose(player);
                         }
                     }
                 }
 
             }
-            else {//TODO dealer automated actions
-                status=dealerRules.checkStatus(player);
+            else {//TODO dealer automated actions, also try using game1.dealer
+                status=player.checkStatus();
                 if(status.equals("WIN")){
                     dealerWin(player);
                 }
@@ -111,17 +108,17 @@ public class GameConsoleClient {
                     dealerLose(player);
                 }
                 else{
-                    while(dealerRules.checkStatus(player).equals("LIVE")){
+                    while(player.checkStatus().equals("LIVE")){
                         boolean decision=game1.dealer.hit(player);
                         if(!decision){
                             //TODO compare all the remaining hands
                             System.out.println("Up next compare all the remaining hands!");
                             compareLiveHands();
                         }
-                        if(playerRules.checkStatus(player).equals("WIN")){
+                        if(player.checkStatus().equals("WIN")){
                             dealerWin(player);
                         }
-                        if(playerRules.checkStatus(player).equals("LOSE")){
+                        if(player.checkStatus().equals("LOSE")){
                             dealerLose(player);
                         }
                     }
@@ -141,12 +138,12 @@ public class GameConsoleClient {
         for(Player player:players){
             System.out.println(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
             if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
-                System.out.println(playerRules.checkTotal(player).size());
-                handTotals.add(Math.max(playerRules.checkTotal(player).get(0),playerRules.checkTotal(player).get(1)));
+                System.out.println(player.checkTotal().size());
+                handTotals.add(Math.max(player.checkTotal().get(0),player.checkTotal().get(1)));
             }
             else{
                 System.out.println("0000000000000000000000000");
-                handTotals.add(playerRules.checkTotal(player).get(0));
+                handTotals.add(player.checkTotal().get(0));
             }
         }
         System.out.println("------------------------XXXXXXXXXXXX");
@@ -155,19 +152,19 @@ public class GameConsoleClient {
         if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
             System.out.println("------------------------");
 
-            dealerWin(players.get(players.size()-1));
+            dealerWin(game1.dealer);
         }
 
-        else{ //else everyone who have higher hand than dealer win
+        else{ //else everyone who have higher hand than dealer wins
             System.out.println("------------------------MMMMMMMMMM");
 
             for(Player player:players){
                 System.out.println("------------------------111111111111");
 
-                if (playerRules.checkTotal(player).get(0)>playerRules.checkTotal(players.get(players.size()-1)).get(0)||playerRules.checkTotal(player).get(1)>playerRules.checkTotal(players.get(players.size()-1)).get(0)){
+                if (player.checkTotal().get(0)>game1.dealer.checkTotal().get(0)||player.checkTotal().get(1)>game1.dealer.checkTotal().get(0)){
                     doWin(player);
                 }
-                else if(playerRules.checkTotal(player).get(0)==playerRules.checkTotal(players.get(players.size()-1)).get(0)||playerRules.checkTotal(player).get(1)==playerRules.checkTotal(players.get(players.size()-1)).get(0)){
+                else if(player.checkTotal().get(0)==game1.dealer.checkTotal().get(0)||player.checkTotal().get(1)==game1.dealer.checkTotal().get(0)){
                     doWin(player);
                 }
                 else{

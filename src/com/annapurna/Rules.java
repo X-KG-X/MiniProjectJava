@@ -12,9 +12,9 @@ public interface Rules {
        5. ace 1 vs 11 player and dealer choice rule
     */
 
-    public List<Integer> checkTotal(Player player);
+    public List<Integer> checkTotal();
 
-    public String checkStatus(Player player);
+    public String checkStatus();
 
     //ACCESSOR METHOD
 

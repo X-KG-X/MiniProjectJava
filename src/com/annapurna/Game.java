@@ -1,21 +1,17 @@
 package com.annapurna;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
-    /* TODO
-        1. get a list of players from client
-        2. delegate dealer to firstDeal, and giveAdditional card according to hit() or stand() condition represented by play()
-        3. refer to the rule class to check the conditions
-        4. main client facing class
-        5. keep track of the turn
-    */
 
     //STATIC FIELDS
     public static final int MAX_PLAYERS=4;
     public static final int MIN_PLAYERS=1;
+    public static Console console=System.console();
+
 
     //INSTANCE FIELDS
     private int playerCount;
@@ -30,19 +26,43 @@ public class Game {
 
     }
     public Game(){}
-    public Game(int playerCount){
-        setPlayerCount(playerCount);
-    }
+
 
     //BUSINESS METHODS
-    public void playerTurn(){
-        for(var player:players){
-            if(player.hitOrStand()){
-                dealer.hit(player);
-                //TODO check total for win/lose in Rules
+    public int getPlayerCountFromConsole(){
+        int playerCount;
+        while (true) {
+            playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
+            try {
+                setPlayerCount(playerCount);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
+            //TODO maybe add a catch to handle non-numeric entry
         }
+        return playerCount;
     }
+
+    public List<Player> getPlayerListFromConsole(){
+        int playerCnt=getPlayerCountFromConsole();
+        for (int i = 0; i < playerCnt; i++) {
+            Player player;
+            while (true) {
+                try {
+                    player = new Player(console.readLine("Enter player Name:"));
+                    System.out.println();
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            players.add(player);
+        }
+        return players;
+    }
+
+
 
 
     //ACCESSOR METHODS
@@ -59,9 +79,8 @@ public class Game {
         return playerCount;
     }
 
-    public void setPlayerCount(int playerCount) {
+    public void setPlayerCount(int playerCount) throws IllegalArgumentException {
         if(playerCount<MIN_PLAYERS||playerCount>MAX_PLAYERS){
-//            System.out.println("Valid number of players:["+ MIN_PLAYERS+", "+MAX_PLAYERS+"]. Please enter a valid number.");
             throw new IllegalArgumentException("Invalid entry: "+playerCount+"."+" Valid number of players =["+ MIN_PLAYERS+", "+MAX_PLAYERS+"].");
         }
         else{

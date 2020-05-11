@@ -9,7 +9,7 @@ public class Dealer extends Player{
     //INSTANT FIELDS
     private List<Card> deck= Deck.newDeck();
 
-    //BUSINESS METHODS TODO Respond to HIT, STAND and also DEAL
+    //BUSINESS METHODS
     public Boolean hit(Player player){
         if(player.hitOrStand()) {
             player.getHand().add(getDeck().remove(0));
@@ -31,7 +31,7 @@ public class Dealer extends Player{
 
 
 
-    public Boolean deal(List<Player> players){ // TODO find another way to pass list of players
+    public Boolean deal(List<Player> players){
         boolean result=false;
         int initialDeckSize= getDeck().size();
         for(int i=0; i<2;i++) {
@@ -39,15 +39,31 @@ public class Dealer extends Player{
                 player.getHand().add(getDeck().remove(0));
             }
         }
-
-        //TODO check for black jack in Rules
-
         if(getDeck().size()==(initialDeckSize-players.size()*2)){
             result=true;
         }
         return result;
     }
-    
+
+    @Override
+    public String checkStatus() {
+        String result="LIVE";
+        List<Integer> sumList= checkTotal();
+        if (sumList.get(0)>=17){
+            setPlay(Player.Play.STAND);
+        }
+        if(sumList.get(0)==21){
+            result="WIN";
+        }
+        else if(sumList.get(0)>=21){
+            result="LOSE";
+        }
+        return result;
+    }
+
+
+
+    //TODO implement soft17/hard17 if more time
 
 
     //ACCESSOR METHODS
@@ -59,9 +75,5 @@ public class Dealer extends Player{
     public String getName() {
         return NAME;
     }
-
-
-
-
 
 }

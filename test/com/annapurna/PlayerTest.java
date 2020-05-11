@@ -30,5 +30,7 @@ public class PlayerTest {
 //        System.out.println(game.getPlayers().get(2).getName());
 
         assertTrue(game.getPlayers().get(2).isDealer());
+        game.dealer.deal(players);
+        System.out.println(players.get(0));
     }
 }

@@ -1,11 +1,10 @@
 package com.annapurna;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class Player {
+public class Player implements Rules {
 
     //INSTANT FIELDS
     private String name;
@@ -18,9 +17,41 @@ public class Player {
         setName(name);
     }
 
-    //BUSINESS METHODS TODO  hit(), stand()
+    //BUSINESS METHODS
     public Boolean hitOrStand(){  //true for HIT and false for stand
         return play.value();
+    }
+
+    @Override
+    public List<Integer> checkTotal() {
+        List<Integer> result=new ArrayList<>();
+        Integer sum=0;
+        Integer alternateSum=0;
+        for(var card: getHand()){
+            if (card.getRank()== Card.Rank.ACE){
+                alternateSum=+1;
+            }
+            else {
+                alternateSum+=card.getRank().value();
+            }
+            sum+=card.getRank().value();
+        }
+        result.add(sum);
+        result.add(alternateSum);
+        return result;
+    }
+
+    @Override
+    public String checkStatus() {
+        String result="LIVE";
+        List<Integer> sumList=checkTotal();
+        if(sumList.get(0).equals(21)||sumList.get(1).equals(21)){
+            result="WIN";
+        }
+        else if(sumList.get(0)>21&&sumList.get(1)>21){
+            result="LOSE";
+        }
+        return result;
     }
 
 
@@ -64,10 +95,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "name='" + getName() + '\'' +
-                ", hand=" + getHand() +
-                '}';
+        return getName() +"\'s"+" hand=" + getHand();
     }
 
 
@@ -86,21 +114,6 @@ public class Player {
     }
 
     //OVERRIDES
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getHand());
-    }
-
-
-    @Override
-    public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            Player that = (Player) obj;
-            return Objects.equals(getHand(), that.getHand());
-    }
 
 
 }

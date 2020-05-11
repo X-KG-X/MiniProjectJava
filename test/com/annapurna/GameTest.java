@@ -21,13 +21,9 @@ public class GameTest {
         game1= new Game(players);
     }
 
-    @Test
-    public void testPlayerTurn(){
-        game1.dealer.deal(players);
-        game1.playerTurn();
-        assertEquals(3,players.get(0).getHand().size());
-        System.out.println(players.get(0).getHand().toString());
-    }
+
+
+
 
     @Test
     public void testGetSetPlayers() {
