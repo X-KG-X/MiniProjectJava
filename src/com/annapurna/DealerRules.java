@@ -2,7 +2,7 @@ package com.annapurna;
 
 import java.util.List;
 
-public class DealerRules extends PlayerRules implements Rules{
+public class DealerRules extends PlayerRules {
 
     @Override
     public String checkStatus(Player player) {
