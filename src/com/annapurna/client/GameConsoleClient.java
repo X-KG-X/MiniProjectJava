@@ -15,9 +15,9 @@ public class GameConsoleClient {
         }
 
         //Welcome Message
-        System.out.println("********************************************");
+        System.out.println("****************************************************************************");
         System.out.println("WELCOME TO ANNAPURNA CASINO. BLACKJACK ADAPTATION PRESENTED BY TEAM JAVA2K!");
-        System.out.println("********************************************");
+        System.out.println("             ********************************************");
 
         //Get list of players
         List<Player> players=game.getPlayerListFromConsole();

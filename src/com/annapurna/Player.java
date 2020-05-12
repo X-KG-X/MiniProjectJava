@@ -90,7 +90,7 @@ public class Player  {
             this.play=Play.STAND;
         }
         else{
-            throw new IllegalArgumentException("Valid entry H/h-->HIT, S/s-->Stand");
+            throw new IllegalArgumentException("**********Valid entry H/h-->HIT, S/s-->Stand");
         }
     }
 

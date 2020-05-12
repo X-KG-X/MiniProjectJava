@@ -17,13 +17,13 @@ public class Game {
     private int playerCount;
     private List<Player> players= new ArrayList<>();
     public Dealer dealer= new Dealer();
+    private GameHelper gameHelper;
 
 
     //CONSTRUCTORS
     Game(List<Player> players){
         players.add(dealer);
         setPlayers(players);
-
     }
     Game(){}
 
@@ -32,14 +32,15 @@ public class Game {
     public int getPlayerCountFromConsole(){
         int playerCount;
         while (true) {
-            playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
             try {
+                playerCount = Integer.parseInt(console.readLine("Please enter the number of players [" + Game.MIN_PLAYERS + "," + Game.MAX_PLAYERS + "] :"));
                 setPlayerCount(playerCount);
                 break;
+            } catch (NumberFormatException e){
+                System.out.println("Please input a number!");
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-            //TODO maybe add a catch to handle non-numeric entry
         }
         return playerCount;
     }
@@ -51,7 +52,6 @@ public class Game {
             while (true) {
                 try {
                     player = new Player(console.readLine("Enter player Name:"));
-                    System.out.println();
                     break;
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
@@ -63,39 +63,39 @@ public class Game {
     }
 
     public void startGame(){
+        gameHelper=new GameHelper(players,dealer,this);
         for (Player player : getPlayers()) {
             String status = null;
-            if (!player.isDealer()) { //checking to make sure the player is not the dealer
+            if (!player.isDealer()) { //Player's turn
                 status = player.checkStatus();
                 if (status.equals("WIN")) {
-                    doWin(player);
+                    gameHelper.doWin(player);
                 } else if (status.equals("LOSE")) {
-                    doLose(player);
-                } else {
-                    playTurn(player);
+                    gameHelper.doLose(player);
+                } else {// "LIVE"
+                    gameHelper.playTurn(player);
                 }
-
             }
-            else {
+            else { //Dealer's turn
                 status=player.checkStatus();
                 if(status.equals("WIN")){
-                    doWin(player);
+                    gameHelper.doWin(player);
                 }
                 else if(status.equals("LOSE")){
-                    doLose(player);
+                    gameHelper.doLose(player);
                 }
-                else{
+                else{ // "LIVE"
                     while(player.checkStatus().equals("LIVE")){
                         boolean decision=dealer.hit(player);
                         if(!decision){
                             System.out.println("Up next compare all the remaining hands!");
-                            compareLiveHands();
+                            gameHelper.compareLiveHands();
                         }
                         if(player.checkStatus().equals("WIN")){
-                            doWin(player);
+                           gameHelper.doWin(player);
                         }
                         if(player.checkStatus().equals("LOSE")){
-                            doLose(player);
+                            gameHelper.doLose(player);
                         }
                     }
                 }
@@ -103,147 +103,16 @@ public class Game {
         }
     }
 
-    public void playTurn(Player player){
-        while (player.checkStatus().equals("LIVE")) {
-            while(true){
-                try{
-                    player.setPlay(console.readLine(player.getName() + ", " + "Enter H/h for HIT, S/s for STAND:"));
-                    break;
-                }
-                catch  (IllegalArgumentException e){
-                    System.out.println(e.getMessage());
-                }
-            }
-            System.out.println();
-            boolean decision = dealer.hit(player);
-            System.out.println(player);
-            System.out.println();
-            if (!decision) {
-                System.out.println(player.getName() + " has decided to STAND.");
-                System.out.println(player);
-                System.out.println();
-                break;
-            }
-            if(player.checkStatus().equals("WIN")){
-                doWin(player);
-            }
-            if(player.checkStatus().equals("LOSE")){
-                doLose(player);
-            }
-        }
-
-    }
-
-    public List<Integer> getStandingHandSums(List<Player> players){
-        System.out.println();
-        List<Integer> result=new ArrayList<>();
-        for(Player player:players){
-            if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
-                result.add(Math.max(player.checkTotal().get(0),player.checkTotal().get(1)));
-            }
-            else{
-                result.add(player.checkTotal().get(0));
-            }
-        }
-        return result;
-    }
-
-    public  void compareLiveHands(){
-        List<Integer> handTotals=getStandingHandSums(players);
-        //If dealer has the highest hand
-        if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
-            doWin(dealer);
-        }
-        else{ //else everyone who have higher hand than dealer wins
-            for(Player player:players){
-                if (player.checkTotal().get(0)>dealer.checkTotal().get(0)||player.checkTotal().get(1)>dealer.checkTotal().get(0)){
-                    doWin(player);
-                }
-                else if(player.checkTotal().get(0)==dealer.checkTotal().get(0)||player.checkTotal().get(1)==dealer.checkTotal().get(0)){
-                    doWin(player);
-                }
-                else{
-                    doLose(player);
-                }
-            }
-
-        }
-
-        System.exit(0);
-
-    }
-
-
-    public  void doWin(Player player){
-        if(player.isDealer()){
-            players.forEach(System.out::println);
-            System.out.println("Dealer "+ Dealer.NAME+ " wins. Better luck next time all!");
-            System.out.println();
-            System.out.println("GAME OVER! GOOD BYE!");
-            System.exit(0);
-        }
-        else{
-            System.out.println(player.getName()+ ", wins!");
-            System.out.println(player);
-            getPlayers().remove(player);
-        }
-        if(getPlayers().size()==1){
-            System.out.println();
-            players.forEach(System.out::println);
-            System.out.println();
-            System.out.println("GAME OVER! GOOD BYE!");
-            System.exit(0);
-        }
-    }
-
-    public  void doLose(Player player){
-        if(player.isDealer()){
-            players.forEach(System.out::println);
-            System.out.println("Dealer "+Dealer.NAME+" loses.");
-            System.out.println();
-            System.out.println("Anyone still standing wins!");
-            System.out.println("GAME OVER! GOOD BYE!");
-            System.exit(0);
-        }
-        else{
-            System.out.println(player.getName()+", loses.");
-            System.out.println(player);
-            getPlayers().remove(player);
-        }
-        if(getPlayers().size()==1){
-            System.out.println();
-            players.forEach(System.out::println);
-            System.out.println();
-            System.out.println("GAME OVER! GOOD BYE!");
-            System.exit(0);
-        }
-    }
-
-
-    public int helperMax(List<Integer> handTotals){
-        int result=0;
-        for(var total:handTotals){
-            if(total>result){
-                result=total;
-            }
-        }
-        return result;
-    }
-
     //ACCESSOR METHODS
-
     public List<Player> getPlayers() {
         return players;
     }
-
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
-
     public int getPlayerCount() {
         return playerCount;
     }
-
     public void setPlayerCount(int playerCount) throws IllegalArgumentException {
         if(playerCount<MIN_PLAYERS||playerCount>MAX_PLAYERS){
             throw new IllegalArgumentException("Invalid entry: "+playerCount+"."+" Valid number of players =["+ MIN_PLAYERS+", "+MAX_PLAYERS+"].");
@@ -252,8 +121,6 @@ public class Game {
             this.playerCount = playerCount+1;
         }
     }
-
-
     public void setDealer(Dealer dealer) {
         this.dealer = dealer;
     }
