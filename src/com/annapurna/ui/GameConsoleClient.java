@@ -1,6 +1,7 @@
 package com.annapurna.ui;
 
 import com.annapurna.Game;
+import com.annapurna.GameFactory;
 import com.annapurna.Player;
 import org.w3c.dom.ls.LSOutput;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class GameConsoleClient {
     public static void main(String[] args) throws InterruptedException {
-        Game game=new Game();
+        Game game=GameFactory.createGame();
         if (game.console == null) {
             System.out.print("No console available");
             return;
@@ -22,7 +23,7 @@ public class GameConsoleClient {
         //Get list of players
         List<Player> players=game.getPlayerListFromConsole();
         //Construct gameActual with tha List of players including the dealer as one of the players
-        Game gameActual= new Game(players);
+        Game gameActual= GameFactory.createGame(players);
         //Game delegates the dealer to deal shuffle the card
         gameActual.dealer.shuffleDeck();
 

@@ -20,12 +20,12 @@ public class Game {
 
 
     //CONSTRUCTORS
-    public Game(List<Player> players){
+    Game(List<Player> players){
         players.add(dealer);
         setPlayers(players);
 
     }
-    public Game(){}
+    Game(){}
 
 
     //BUSINESS METHODS
