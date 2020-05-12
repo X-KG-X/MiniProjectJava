@@ -24,11 +24,11 @@ public class GameConsoleClient {
         //Construct gameActual with tha List of players including the dealer as one of the players
         Game gameActual= GameFactory.createGame(players);
         //Game delegates the dealer to deal shuffle the card
-        gameActual.dealer.shuffleDeck();
+        gameActual.getDealer().shuffleDeck();
 
-        gameActual.dealer.deal(gameActual.getPlayers());
+        gameActual.getDealer().deal(gameActual.getPlayers());
 
-        System.out.println("Give our Dealer "+gameActual.dealer.getName()+" a sec to deal.");
+        System.out.println("Give our Dealer "+gameActual.getDealer().getName()+" a sec to deal.");
         System.out.println();
         Thread.sleep(2000);
 

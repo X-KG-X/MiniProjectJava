@@ -5,20 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-
-
     //STATIC FIELDS
     public static final int MAX_PLAYERS=4;
     public static final int MIN_PLAYERS=1;
     public static Console console=System.console();
 
-
     //INSTANCE FIELDS
     private int playerCount;
     private List<Player> players= new ArrayList<>();
-    public Dealer dealer= new Dealer();
+    private Dealer dealer= new Dealer();
     private GameHelper gameHelper;
-
 
     //CONSTRUCTORS
     Game(List<Player> players){
@@ -26,7 +22,6 @@ public class Game {
         setPlayers(players);
     }
     Game(){}
-
 
     //BUSINESS METHODS
     public int getPlayerCountFromConsole(){
@@ -62,16 +57,16 @@ public class Game {
         return players;
     }
 
-    public void startGame(){
+    public void startGame() throws InterruptedException {
         gameHelper=new GameHelper(players,dealer,this);
         for (Player player : getPlayers()) {
             String status = null;
             if (!player.isDealer()) { //Player's turn
                 status = player.checkStatus();
                 if (status.equals("WIN")) {
-                    gameHelper.doWin(player);
+                    gameHelper.winLose(player,status);
                 } else if (status.equals("LOSE")) {
-                    gameHelper.doLose(player);
+                    gameHelper.winLose(player,status);
                 } else {// "LIVE"
                     gameHelper.playTurn(player);
                 }
@@ -79,10 +74,10 @@ public class Game {
             else { //Dealer's turn
                 status=player.checkStatus();
                 if(status.equals("WIN")){
-                    gameHelper.doWin(player);
+                    gameHelper.winLose(player,status);
                 }
                 else if(status.equals("LOSE")){
-                    gameHelper.doLose(player);
+                    gameHelper.winLose(player,status);
                 }
                 else{ // "LIVE"
                     while(player.checkStatus().equals("LIVE")){
@@ -92,10 +87,10 @@ public class Game {
                             gameHelper.compareLiveHands();
                         }
                         if(player.checkStatus().equals("WIN")){
-                           gameHelper.doWin(player);
+                            gameHelper.winLose(player,"WIN");
                         }
                         if(player.checkStatus().equals("LOSE")){
-                            gameHelper.doLose(player);
+                            gameHelper.winLose(player,"LOSE");
                         }
                     }
                 }
@@ -121,7 +116,7 @@ public class Game {
             this.playerCount = playerCount+1;
         }
     }
-    public void setDealer(Dealer dealer) {
-        this.dealer = dealer;
+    public Dealer getDealer() {
+        return this.dealer;
     }
 }

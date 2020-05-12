@@ -6,7 +6,6 @@ import java.util.List;
 
 public class GameHelper {
     public static Console console=System.console();
-//    private Player player;
     private List<Player> players;
     private Dealer dealer;
     private Game game;
@@ -31,7 +30,6 @@ public class GameHelper {
             }
             System.out.println(); // Spacing only
             boolean decision = dealer.hit(player);
-//            System.out.println(player);
             System.out.println(); // Spacing only
             if (!decision) {
                 System.out.println(player.getName() + " has decided to STAND.");
@@ -40,10 +38,10 @@ public class GameHelper {
                 break;
             }
             if(player.checkStatus().equals("WIN")){
-                doWin(player);
+                winLose(player,"WIN");
             }
             if(player.checkStatus().equals("LOSE")){
-                doLose(player);
+                winLose(player,"LOSE");
             }
         }
 
@@ -63,28 +61,20 @@ public class GameHelper {
         return result;
     }
 
-    public void compareLiveHands(){
-        System.out.println(players);
+    public void compareLiveHands() throws InterruptedException {
+        Thread.sleep(3000);
         List<Integer> handTotals=getStandingHandSums(players);
         //If dealer has the highest hand
         if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
-            doWin(dealer);
+            winLose(dealer,"WIN");
         }
         else{ //else everyone who have higher hand than dealer wins
             for(Player player:players){
-                if (player.checkTotal().get(0)>dealer.checkTotal().get(0)||player.checkTotal().get(1)>dealer.checkTotal().get(0)){
-                    doWin(player);
-                }
-                else if(player.checkTotal().get(0)==dealer.checkTotal().get(0)||player.checkTotal().get(1)==dealer.checkTotal().get(0)){
-                    doWin(player);
-                }
-                else{
-                    doLose(player);
+                if(!player.isDealer()){
+                    winLose(player, "WIN");
                 }
             }
-
         }
-//        System.exit(0);
     }
 
     public int helperMax(List<Integer> handTotals){
@@ -97,55 +87,28 @@ public class GameHelper {
         return result;
     }
 
-    public void doWin(Player player)  {
+    public void winLose(Player player, String string)  {
         if(player.isDealer()){
-            System.out.println("             ********************************************");
+            System.out.println("\n             ********************************************");
             players.forEach(System.out::println);
-            System.out.println("             ********************************************");
-            System.out.println("Dealer "+ Dealer.NAME+ " wins. Better luck next time all!");
+            System.out.println("\n             ********************************************");
+            System.out.println("\nDealer "+ Dealer.NAME+ " "+ string+"S");
+            System.out.println("\n"+players.get(1)+" WINS");
             System.out.println(); // Spacing only
-            System.out.println("GAME OVER! GOOD BYE!");
+            System.out.println("\nGAME OVER! GOOD BYE! :( :( :( :( :( :( :( :( :( :( :( :( :( :(");
             System.exit(0);
         }
         else{
-            System.out.println(player.getName()+ ", wins!");
+            System.out.println("\n"+player.getName()+" "+ string+"S");
             System.out.println(player);
-            game.getPlayers().remove(player);
-//            getPlayers().removeIf(player1 -> player1.checkStatus().equals("WIN"));
+            players.remove(player);
         }
-        if(game.getPlayers().size()==1){
-            System.out.println("             ********************************************");
+        if(players.size()==1){
+            System.out.println("\n             ********************************************");
             players.forEach(System.out::println);
-            System.out.println("             ********************************************");
-            System.out.println("GAME OVER! GOOD BYE!");
+            System.out.println("\n             ********************************************");
+            System.out.println("\nGAME OVER! GOOD BYE! :( :( :( :( :( :( :( :( :( :( :( :( :( :(");
             System.exit(0);
         }
     }
-
-    public  void doLose(Player player){
-        if(player.isDealer()){
-            System.out.println("Standing Hand/s********************************************");
-            players.forEach(System.out::println);
-            System.out.println("               ********************************************");
-            System.out.println("Dealer "+Dealer.NAME+" loses.");
-            System.out.println(); // Spacing only
-            System.out.println("Anyone still standing wins!");
-            System.out.println("GAME OVER! GOOD BYE!");
-            System.exit(0);
-        }
-        else{
-            System.out.println(player.getName()+", loses.");
-            System.out.println(player);
-            game.getPlayers().remove(player);
-//            getPlayers().removeIf(player1 -> player1.checkStatus().equals("LOSE"));
-        }
-        if(game.getPlayers().size()==1){
-            System.out.println("Standing Hand/s********************************************");
-            players.forEach(System.out::println);
-            System.out.println("               ********************************************");
-            System.out.println("GAME OVER! GOOD BYE!");
-            System.exit(0);
-        }
-    }
-
 }

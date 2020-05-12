@@ -27,12 +27,12 @@ public class PlayerTest {
         List<Player> players=new ArrayList<>();
         players.add(p1);
         Game game= new Game(players);
-        game.dealer.shuffleDeck();
-        game.dealer.deal(players);
+        game.getDealer().shuffleDeck();
+        game.getDealer().deal(players);
 
         System.out.println(p1);
         System.out.println(p1.checkTotal());
-        game.dealer.hit(p1);
+        game.getDealer().hit(p1);
         System.out.println(p1);
         System.out.println(p1.checkTotal());
         System.out.println(p1.checkStatus());
@@ -52,7 +52,7 @@ public class PlayerTest {
 //        System.out.println(game.getPlayers().get(2).getName());
 
         assertTrue(game.getPlayers().get(2).isDealer());
-        game.dealer.deal(players);
+        game.getDealer().deal(players);
         System.out.println(players.get(0));
     }
 }

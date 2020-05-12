@@ -2,10 +2,8 @@ package com.annapurna;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class Player  {
-
+public class Player implements Rules {
     //INSTANT FIELDS
     private String name;
     private List<Card> hand=new ArrayList<>();
@@ -53,10 +51,6 @@ public class Player  {
         return result;
     }
 
-
-
-
-
     //ACCESSOR METHODS
     public String getName() {
         return name;
@@ -103,12 +97,10 @@ public class Player  {
     }
 
     //OBJECT OVERRIDE
-
     @Override
     public String toString() {
         return getName() +"\'s"+" hand=" + getHand();
     }
-
 
     //STATIC NESTED CLASS
     public static enum Play{
@@ -123,8 +115,5 @@ public class Player  {
         public boolean value(){ return value;}
 
     }
-
-    //OVERRIDES
-
 
 }

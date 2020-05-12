@@ -18,7 +18,6 @@ public class Dealer extends Player{
         return false;
     }
 
-
     public Boolean shuffleDeck(){
         boolean result=false;
         List<Card> checkDeck=List.copyOf(this.getDeck());
@@ -28,8 +27,6 @@ public class Dealer extends Player{
         }
         return result;
     }
-
-
 
     public Boolean deal(List<Player> players){
         boolean result=false;
@@ -61,11 +58,6 @@ public class Dealer extends Player{
         return result;
     }
 
-
-
-    //TODO implement soft17/hard17 if more time
-
-
     //ACCESSOR METHODS
     public List<Card> getDeck() {
         return deck;
@@ -75,5 +67,4 @@ public class Dealer extends Player{
     public String getName() {
         return NAME;
     }
-
 }
