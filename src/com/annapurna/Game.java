@@ -72,25 +72,7 @@ public class Game {
                 } else if (status.equals("LOSE")) {
                     doLose(player);
                 } else {
-                    while (player.checkStatus().equals("LIVE")) {
-                        player.setPlay(Player.Play.valueOf(console.readLine(player.getName() + ", " + "Enter [HIT, STAND]:")));
-                        System.out.println();
-                        boolean decision = dealer.hit(player);
-                        System.out.println(player);
-                        System.out.println();
-                        if (!decision) {
-                            System.out.println(player.getName() + " has decided to STAND.");
-                            System.out.println(player);
-                            System.out.println();
-                            break;
-                        }
-                        if(player.checkStatus().equals("WIN")){
-                            doWin(player);
-                        }
-                        if(player.checkStatus().equals("LOSE")){
-                            doLose(player);
-                        }
-                    }
+                    playTurn(player);
                 }
 
             }
@@ -121,19 +103,53 @@ public class Game {
         }
     }
 
-    public  void compareLiveHands(){
-        players.forEach(System.out::println);
-        System.out.println();
-        List<Integer> handTotals=new ArrayList<>();
-        for(Player player:players){
-            if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
-                System.out.println(player.checkTotal().size());
-                handTotals.add(Math.max(player.checkTotal().get(0),player.checkTotal().get(1)));
+    public void playTurn(Player player){
+        while (player.checkStatus().equals("LIVE")) {
+            while(true){
+                try{
+                    player.setPlay(console.readLine(player.getName() + ", " + "Enter H/h for HIT, S/s for STAND:"));
+                    break;
+                }
+                catch  (IllegalArgumentException e){
+                    System.out.println(e.getMessage());
+                }
             }
-            else{
-                handTotals.add(player.checkTotal().get(0));
+            System.out.println();
+            boolean decision = dealer.hit(player);
+            System.out.println(player);
+            System.out.println();
+            if (!decision) {
+                System.out.println(player.getName() + " has decided to STAND.");
+                System.out.println(player);
+                System.out.println();
+                break;
+            }
+            if(player.checkStatus().equals("WIN")){
+                doWin(player);
+            }
+            if(player.checkStatus().equals("LOSE")){
+                doLose(player);
             }
         }
+
+    }
+
+    public List<Integer> getStandingHandSums(List<Player> players){
+        System.out.println();
+        List<Integer> result=new ArrayList<>();
+        for(Player player:players){
+            if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
+                result.add(Math.max(player.checkTotal().get(0),player.checkTotal().get(1)));
+            }
+            else{
+                result.add(player.checkTotal().get(0));
+            }
+        }
+        return result;
+    }
+
+    public  void compareLiveHands(){
+        List<Integer> handTotals=getStandingHandSums(players);
         //If dealer has the highest hand
         if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
             doWin(dealer);

@@ -1,9 +1,8 @@
-package com.annapurna.ui;
+package com.annapurna.client;
 
 import com.annapurna.Game;
 import com.annapurna.GameFactory;
 import com.annapurna.Player;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
 

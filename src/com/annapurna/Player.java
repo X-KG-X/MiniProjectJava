@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Player implements Rules {
+public class Player  {
 
     //INSTANT FIELDS
     private String name;
@@ -22,7 +22,6 @@ public class Player implements Rules {
         return play.value();
     }
 
-    @Override
     public List<Integer> checkTotal() {
         List<Integer> result=new ArrayList<>();
         Integer sum=0;
@@ -41,7 +40,6 @@ public class Player implements Rules {
         return result;
     }
 
-    @Override
     public String checkStatus() {
         String result="LIVE";
         List<Integer> sumList=checkTotal();
@@ -64,7 +62,7 @@ public class Player implements Rules {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws IllegalArgumentException{
         if(!name.isBlank()){
             this.name = name;
         }
@@ -83,6 +81,17 @@ public class Player implements Rules {
 
     public void setPlay(Play play) {
         this.play = play;
+    }
+    public void setPlay(String play) throws IllegalArgumentException{
+        if(play.toUpperCase().equals("H")){
+            this.play=Play.HIT;
+        }
+        else if(play.toUpperCase().equals("S")){
+            this.play=Play.STAND;
+        }
+        else{
+            throw new IllegalArgumentException("Valid entry H/h-->HIT, S/s-->Stand");
+        }
     }
 
     public Boolean isDealer(){

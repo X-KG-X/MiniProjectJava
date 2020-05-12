@@ -16,6 +16,12 @@ public class PlayerTest {
         p1=new Player("KG");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetPlay() {
+        p1.setPlay("");
+        assertEquals(Player.Play.STAND,p1.getPlay());
+    }
+
     @Test
     public void testCheckTotal(){
         List<Player> players=new ArrayList<>();
