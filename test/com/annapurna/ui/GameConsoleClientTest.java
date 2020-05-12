@@ -13,16 +13,6 @@ public class GameConsoleClientTest {
 
 
 
-    @Test
-    public void testHelperMax(){
-        List<Integer> integerList=new ArrayList<>();
-        integerList.add(0);
-        integerList.add(19);
-        integerList.add(17);
-
-        assertEquals(19,GameConsoleClient.helperMax(integerList));
-
-    }
 
 
 
