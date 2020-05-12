@@ -35,7 +35,8 @@ public class GameMainTest {
         //Print the hands dealt TODO time permitting hide dealers second card
         gameActual.getPlayers().forEach(player -> System.out.println((player)+"\n"));
 
-
+        //Begin play
+        gameActual.startGame();
 
     }
 }

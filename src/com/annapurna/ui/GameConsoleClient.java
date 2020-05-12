@@ -81,11 +81,11 @@ public class GameConsoleClient {
                         player.setPlay(Player.Play.valueOf(console.readLine(player.getName() + ", " + "Enter [HIT, STAND]:")));
                         System.out.println();
                         boolean decision = game1.dealer.hit(player);
-                        System.out.println(player.getName()+"   "+ player.getHand());
+                        System.out.println(player);
                         System.out.println();
                         if (!decision) {
                             System.out.println(player.getName() + " has decided to STAND.");
-                            System.out.println(player.getName() + ", your current hand is: " + player.getHand());
+                            System.out.println(player);
                             System.out.println();
                             break;
                         }
@@ -102,10 +102,10 @@ public class GameConsoleClient {
             else {//TODO dealer automated actions, also try using game1.dealer
                 status=player.checkStatus();
                 if(status.equals("WIN")){
-                    dealerWin(player);
+                    doWin(player);
                 }
                 else if(status.equals("LOSE")){
-                    dealerLose(player);
+                    doLose(player);
                 }
                 else{
                     while(player.checkStatus().equals("LIVE")){
@@ -116,10 +116,10 @@ public class GameConsoleClient {
                             compareLiveHands();
                         }
                         if(player.checkStatus().equals("WIN")){
-                            dealerWin(player);
+                            doWin(player);
                         }
                         if(player.checkStatus().equals("LOSE")){
-                            dealerLose(player);
+                            doLose(player);
                         }
                     }
                 }
@@ -131,7 +131,7 @@ public class GameConsoleClient {
         //TODO is any other player is still standing then compare dealer car to them and give them a win or lose
 
     public static void compareLiveHands(){
-        players.forEach(player -> System.out.println(player.getName()+" has "+ player.getHand()));
+        players.forEach(System.out::println);
         System.out.println();
         List<Integer> handTotals=new ArrayList<>();
 
@@ -152,7 +152,7 @@ public class GameConsoleClient {
         if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
             System.out.println("------------------------");
 
-            dealerWin(game1.dealer);
+            doWin(game1.dealer);
         }
 
         else{ //else everyone who have higher hand than dealer wins
@@ -188,40 +188,49 @@ public class GameConsoleClient {
         return result;
     }
 
-
     public static void doWin(Player player){
-        System.out.println(player.getHand());
-        System.out.println(player.getName()+ ", you got BlackJack. You win!");
-        game1.getPlayers().remove(player);
+        if(player.isDealer()){
+            System.out.println("Dealer "+ Dealer.NAME+ " wins. Better luck next time all!");
+            System.out.println();
+            players.forEach(System.out::println);
+            System.out.println("GAME OVER! GOOD BYE!");
+            System.exit(0);
+        }
+        else{
+            System.out.println(player.getName()+ ", wins!");
+            System.out.println(player);
+            game1.getPlayers().remove(player);
+        }
         if(game1.getPlayers().size()==1){
+            System.out.println();
+            players.forEach(System.out::println);
             System.out.println("GAME OVER! GOOD BYE!");
             System.exit(0);
         }
     }
 
-    public static void doLose(Player player) {
-        System.out.println(player.getHand());
-        System.out.println(player.getName() + ", sorry you lose.");
-        game1.getPlayers().remove(player);
-        if (game1.getPlayers().size() == 1) {
-            System.out.println("DEALER WINS! GOOD BYE!");
+    public static void doLose(Player player){
+        if(player.isDealer()){
+            System.out.println("Dealer "+Dealer.NAME+" loses.");
+            System.out.println();
+            players.forEach(System.out::println);
+            System.out.println("Anyone still standing wins!");
+            System.out.println("GAME OVER! GOOD BYE!");
+            System.exit(0);
+        }
+        else{
+            System.out.println(player.getName()+", loses.");
+            System.out.println(player);
+            game1.getPlayers().remove(player);
+        }
+        if(game1.getPlayers().size()==1){
+            System.out.println();
+            players.forEach(System.out::println);
+            System.out.println("GAME OVER! GOOD BYE!");
             System.exit(0);
         }
     }
 
-    public static void dealerWin(Player player){
-        System.out.println(player.getHand());
-        System.out.println("Dealer "+ Dealer.NAME+ " wins. Better luck next time all!");
-        System.out.println("GAME OVER! GOOD BYE!");
-        System.exit(0);
-    }
-
-    public static void dealerLose(Player player){
-        System.out.println(player.getHand());
-        System.out.println("Dealer "+ Dealer.NAME+ " loses, all LIVE players win!");
-        System.out.println("GAME OVER! GOOD BYE!");
-        System.exit(0);
-    }
 
 
 }

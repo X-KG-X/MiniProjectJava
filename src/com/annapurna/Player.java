@@ -29,7 +29,7 @@ public class Player implements Rules {
         Integer alternateSum=0;
         for(var card: getHand()){
             if (card.getRank()== Card.Rank.ACE){
-                alternateSum=+1;
+                alternateSum+=1;
             }
             else {
                 alternateSum+=card.getRank().value();
@@ -47,12 +47,14 @@ public class Player implements Rules {
         List<Integer> sumList=checkTotal();
         if(sumList.get(0).equals(21)||sumList.get(1).equals(21)){
             result="WIN";
+            System.out.println("***********BLACK JACK*************");
         }
         else if(sumList.get(0)>21&&sumList.get(1)>21){
             result="LOSE";
         }
         return result;
     }
+
 
 
 
