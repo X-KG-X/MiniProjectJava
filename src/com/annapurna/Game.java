@@ -2,6 +2,7 @@ package com.annapurna;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Game {
@@ -23,28 +24,74 @@ public class Game {
     Game(){}
 
     //BUSINESS METHODS
-    public void startGame() throws InterruptedException {
+//    public void startGame() throws InterruptedException {
+//        setUpGame();
+//        GameHelper gameHelper = new GameHelper(players, dealer, this);
+//        for (Player player : getPlayers()) {
+//            String status = null;
+//            if (!player.isDealer()) { //Player's turn
+//                status = player.checkStatus();
+//                if (status.equals("WIN")) {
+//                    gameHelper.winLose(player,"WIN");
+////                } else if (status.equals("LOSE")) {
+////                    gameHelper.winLose(player,"LOSE");
+//                } else {// "LIVE"
+//                    gameHelper.playTurn(player);
+//                }
+//            }
+//            else { //Dealer's turn
+//                status=player.checkStatus();
+//                if(status.equals("WIN")){
+//                    gameHelper.winLose(player,"WIN");
+////                }
+////                else if(status.equals("LOSE")){
+////                    gameHelper.winLose(player,"LOSE");
+//                }
+//                else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
+//                    while(player.checkStatus().equals("LIVE")){
+//                        boolean decision=dealer.hit(player);
+//                        if(!decision){
+//                            System.out.println("Up next compare all the remaining hands!");
+//                            gameHelper.compareLiveHands();
+//                        }
+//                        if(player.checkStatus().equals("WIN")){
+//                            gameHelper.winLose(player,"WIN");
+//                        }
+//                        else if(player.checkStatus().equals("LOSE")){
+//                            gameHelper.winLose(player,"LOSE");
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    public void startGameAlt() throws InterruptedException {
         setUpGame();
         GameHelper gameHelper = new GameHelper(players, dealer, this);
-        for (Player player : getPlayers()) {
+        Iterator<Player> it =players.iterator();
+        while(it.hasNext()){
             String status = null;
+            Player player=it.next();
             if (!player.isDealer()) { //Player's turn
                 status = player.checkStatus();
                 if (status.equals("WIN")) {
                     gameHelper.winLose(player,"WIN");
-                } else if (status.equals("LOSE")) {
-                    gameHelper.winLose(player,"LOSE");
+                    it.remove();
+//                } else if (status.equals("LOSE")) {
+//                    gameHelper.winLose(player,"LOSE");
                 } else {// "LIVE"
-                    gameHelper.playTurn(player);
+                    gameHelper.playTurn(player,it);
                 }
             }
             else { //Dealer's turn
                 status=player.checkStatus();
                 if(status.equals("WIN")){
                     gameHelper.winLose(player,"WIN");
-                }
-                else if(status.equals("LOSE")){
-                    gameHelper.winLose(player,"LOSE");
+                    it.remove();
+//                }
+//                else if(status.equals("LOSE")){
+//                    gameHelper.winLose(player,"LOSE");
                 }
                 else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
                     while(player.checkStatus().equals("LIVE")){
@@ -52,6 +99,8 @@ public class Game {
                         if(!decision){
                             System.out.println("Up next compare all the remaining hands!");
                             gameHelper.compareLiveHands();
+                            System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
+                            System.exit(0);
                         }
                         if(player.checkStatus().equals("WIN")){
                             gameHelper.winLose(player,"WIN");
@@ -64,6 +113,7 @@ public class Game {
             }
         }
     }
+
     public void setUpGame() throws InterruptedException {
         //Welcome Message
         System.out.println("****************************************************************************");

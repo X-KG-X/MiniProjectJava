@@ -3,6 +3,7 @@ package com.annapurna;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ class GameHelper {
         this.game=game;
     }
 
-    public void playTurn(Player player){
+    public void playTurn(Player player, Iterator<Player> it){
         while (player.checkStatus().equals("LIVE")) {
             while(true){
                 System.out.println(player);
@@ -40,9 +41,11 @@ class GameHelper {
             }
             if(player.checkStatus().equals("WIN")){
                 winLose(player,"WIN");
+                it.remove();
             }
             else if(player.checkStatus().equals("LOSE")){
                 winLose(player,"LOSE");
+                it.remove();
             }
         }
 
@@ -107,8 +110,9 @@ class GameHelper {
         else{
             System.out.println("\n"+player.getName()+" "+ string+"S");
             System.out.println(player);
+
         }
-        System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
-        System.exit(0);
+//        System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
+//        System.exit(0);
     }
 }

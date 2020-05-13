@@ -12,9 +12,9 @@ public class GameConsoleClient {
             System.out.print("No console available");
             return;
         }
-
         Game game= GameFactory.createGame();
-        game.startGame();
+
+        game.startGameAlt();
 
     }
 }
