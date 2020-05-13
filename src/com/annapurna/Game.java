@@ -79,7 +79,7 @@ public class Game {
                 else if(status.equals("LOSE")){
                     gameHelper.winLose(player,status);
                 }
-                else{ // "LIVE"
+                else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
                     while(player.checkStatus().equals("LIVE")){
                         boolean decision=dealer.hit(player);
                         if(!decision){

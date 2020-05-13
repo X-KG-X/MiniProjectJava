@@ -84,7 +84,7 @@ public class Player implements Rules {
             this.play=Play.STAND;
         }
         else{
-            throw new IllegalArgumentException("**********Valid entry H/h-->HIT, S/s-->Stand");
+            throw new IllegalArgumentException("Invalid entry. Valid entry H/h-->HIT, S/s-->Stand");
         }
     }
 

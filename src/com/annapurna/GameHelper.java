@@ -2,6 +2,8 @@ package com.annapurna;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class GameHelper {
@@ -62,40 +64,41 @@ public class GameHelper {
     }
 
     public void compareLiveHands() throws InterruptedException {
-        Thread.sleep(3000);
+        players.forEach(System.out::println);
+
+        Thread.sleep(6000);
         List<Integer> handTotals=getStandingHandSums(players);
         //If dealer has the highest hand
-        if(helperMax(handTotals)==handTotals.get(handTotals.size()-1)){
+        Integer maxHand=Collections.max(handTotals);
+        Integer dealerTotal=handTotals.get(handTotals.size()-1);
+        if(maxHand.equals(dealerTotal) && Collections.frequency(handTotals,maxHand)==1){
             winLose(dealer,"WIN");
         }
         else{ //else everyone who have higher hand than dealer wins
-            for(Player player:players){
-                if(!player.isDealer()){
-                    winLose(player, "WIN");
+            for(int i=0;i<handTotals.size()-1;i++){
+                if(handTotals.get(i)>=dealerTotal){
+                    winLose(players.get(i),"WIN");
+                }
+                else{
+                    winLose(players.get(i),"LOSE");
                 }
             }
         }
     }
 
-    public int helperMax(List<Integer> handTotals){
-        int result=0;
-        for(var total:handTotals){
-            if(total>result){
-                result=total;
-            }
-        }
-        return result;
-    }
 
     public void winLose(Player player, String string)  {
         if(player.isDealer()){
             System.out.println("\n             ********************************************");
             players.forEach(System.out::println);
-            System.out.println("\n             ********************************************");
+            System.out.println("\n             ********************************************!");
             System.out.println("\nDealer "+ Dealer.NAME+ " "+ string+"S");
-            System.out.println("\n"+players.get(1)+" WINS");
+            if(string.equals("LOSE")){
+                System.out.println("\n"+players.get(0).getName()+" WINS");
+                System.out.println(players.get(0));
+            }
             System.out.println(); // Spacing only
-            System.out.println("\nGAME OVER! GOOD BYE! :( :( :( :( :( :( :( :( :( :( :( :( :( :(");
+            System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
             System.exit(0);
         }
         else{
@@ -104,10 +107,10 @@ public class GameHelper {
             players.remove(player);
         }
         if(players.size()==1){
-            System.out.println("\n             ********************************************");
-            players.forEach(System.out::println);
-            System.out.println("\n             ********************************************");
-            System.out.println("\nGAME OVER! GOOD BYE! :( :( :( :( :( :( :( :( :( :( :( :( :( :(");
+//            System.out.println("\n             ********************************************");
+//            players.forEach(System.out::println);
+//            System.out.println("\n             ********************************************");
+            System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
             System.exit(0);
         }
     }
