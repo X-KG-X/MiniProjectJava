@@ -4,7 +4,7 @@ import java.util.List;
 
 interface Rules {
 
-    public List<Integer> checkTotal();
+    List<Integer> checkTotal();
 
-    public String checkStatus();
+    String checkStatus();
 }

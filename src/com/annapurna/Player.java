@@ -68,7 +68,7 @@ class Player implements Rules {
     public List<Card> getHand() {
         return hand;
     }
-    public void setHand(List<Card> hand) {//TODO remove later
+    public void setHand(List<Card> hand) {//TODO test purposes
         this.hand = hand;
     }
 

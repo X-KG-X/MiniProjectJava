@@ -69,6 +69,7 @@ class GameHelper {
         Integer maxHand=Collections.max(handTotals);
         Integer dealerHand=handTotals.get(handTotals.size()-1);
         if(maxHand.equals(dealerHand) && Collections.frequency(handTotals,maxHand)==1){
+            System.out.println(Collections.frequency(handTotals,maxHand));
             winLose(dealer,"WIN");
         }
         else{ //else everyone who have higher hand than dealer wins

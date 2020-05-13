@@ -8,7 +8,7 @@ public class CardTest {
 
     @Test
     public void testCard(){
-        assertEquals(11,Card.Rank.ACE.value());
+        assertEquals(11, Card.Rank.ACE.value());
         System.out.println(new Card(Card.Rank.ACE, Card.Suit.DIAMOND));
     }
 
