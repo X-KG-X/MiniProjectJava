@@ -3,7 +3,7 @@ package com.annapurna;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player implements Rules {
+class Player implements Rules {
     //INSTANT FIELDS
     private String name;
     private List<Card> hand=new ArrayList<>();
@@ -68,6 +68,9 @@ public class Player implements Rules {
     public List<Card> getHand() {
         return hand;
     }
+    public void setHand(List<Card> hand) {//TODO remove later
+        this.hand = hand;
+    }
 
     public Play getPlay() {
         return play;
@@ -115,5 +118,4 @@ public class Player implements Rules {
         public boolean value(){ return value;}
 
     }
-
 }

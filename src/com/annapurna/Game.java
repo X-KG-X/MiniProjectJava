@@ -14,7 +14,6 @@ public class Game {
     private int playerCount;
     private List<Player> players= new ArrayList<>();
     private Dealer dealer= new Dealer();
-    private GameHelper gameHelper;
 
     //CONSTRUCTORS
     Game(List<Player> players){
@@ -24,6 +23,68 @@ public class Game {
     Game(){}
 
     //BUSINESS METHODS
+    public void startGame() throws InterruptedException {
+        setUpGame();
+        GameHelper gameHelper = new GameHelper(players, dealer, this);
+        for (Player player : getPlayers()) {
+            String status = null;
+            if (!player.isDealer()) { //Player's turn
+                status = player.checkStatus();
+                if (status.equals("WIN")) {
+                    gameHelper.winLose(player,"WIN");
+                } else if (status.equals("LOSE")) {
+                    gameHelper.winLose(player,"LOSE");
+                } else {// "LIVE"
+                    gameHelper.playTurn(player);
+                }
+            }
+            else { //Dealer's turn
+                status=player.checkStatus();
+                if(status.equals("WIN")){
+                    gameHelper.winLose(player,"WIN");
+                }
+                else if(status.equals("LOSE")){
+                    gameHelper.winLose(player,"LOSE");
+                }
+                else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
+                    while(player.checkStatus().equals("LIVE")){
+                        boolean decision=dealer.hit(player);
+                        if(!decision){
+                            System.out.println("Up next compare all the remaining hands!");
+                            gameHelper.compareLiveHands();
+                        }
+                        if(player.checkStatus().equals("WIN")){
+                            gameHelper.winLose(player,"WIN");
+                        }
+                        else if(player.checkStatus().equals("LOSE")){
+                            gameHelper.winLose(player,"LOSE");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void setUpGame() throws InterruptedException {
+        //Welcome Message
+        System.out.println("****************************************************************************");
+        System.out.println("WELCOME TO ANNAPURNA CASINO. BLACKJACK ADAPTATION PRESENTED BY TEAM JAVA2K!");
+        System.out.println("             ********************************************");
+        //Get list of players
+        List<Player> players=getPlayerListFromConsole();
+        //Construct gameActual with tha List of players including the dealer as one of the players
+        Game game= GameFactory.createGame(players);
+        //Game delegates the dealer to deal shuffle the card
+        game.getDealer().shuffleDeck();
+        game.getDealer().deal(game.getPlayers());
+
+        System.out.println("Give our Dealer "+game.getDealer().getName()+" a sec to deal.");
+        System.out.println();
+        Thread.sleep(2000);
+
+        //Print the hands dealt
+        game.firstHandDisplay();
+    }
+
     public int getPlayerCountFromConsole(){
         int playerCount;
         while (true) {
@@ -57,43 +118,13 @@ public class Game {
         return players;
     }
 
-    public void startGame() throws InterruptedException {
-        gameHelper=new GameHelper(players,dealer,this);
-        for (Player player : getPlayers()) {
-            String status = null;
-            if (!player.isDealer()) { //Player's turn
-                status = player.checkStatus();
-                if (status.equals("WIN")) {
-                    gameHelper.winLose(player,status);
-                } else if (status.equals("LOSE")) {
-                    gameHelper.winLose(player,status);
-                } else {// "LIVE"
-                    gameHelper.playTurn(player);
-                }
+    public void firstHandDisplay(){
+        for(Player player:getPlayers()){
+            if(player.isDealer()){
+                System.out.println(Dealer.NAME+"'s hand=["+getDealer().getHand().get(0)+",{XXXXXXXXXXX}]\n");
             }
-            else { //Dealer's turn
-                status=player.checkStatus();
-                if(status.equals("WIN")){
-                    gameHelper.winLose(player,status);
-                }
-                else if(status.equals("LOSE")){
-                    gameHelper.winLose(player,status);
-                }
-                else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
-                    while(player.checkStatus().equals("LIVE")){
-                        boolean decision=dealer.hit(player);
-                        if(!decision){
-                            System.out.println("Up next compare all the remaining hands!");
-                            gameHelper.compareLiveHands();
-                        }
-                        if(player.checkStatus().equals("WIN")){
-                            gameHelper.winLose(player,"WIN");
-                        }
-                        if(player.checkStatus().equals("LOSE")){
-                            gameHelper.winLose(player,"LOSE");
-                        }
-                    }
-                }
+            else {
+                System.out.println(player);
             }
         }
     }

@@ -21,7 +21,10 @@ public class GameTest {
         game1= new Game(players);
     }
 
-
+    @Test
+    public void testCTOR(){
+        System.out.println(game1.getPlayers());
+    }
 
 
 

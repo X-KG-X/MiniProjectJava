@@ -2,11 +2,11 @@ package com.annapurna;
 
 import java.io.Console;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class GameHelper {
+class GameHelper {
     public static Console console=System.console();
     private List<Player> players;
     private Dealer dealer;
@@ -30,7 +30,6 @@ public class GameHelper {
                     System.out.println(e.getMessage());
                 }
             }
-            System.out.println(); // Spacing only
             boolean decision = dealer.hit(player);
             System.out.println(); // Spacing only
             if (!decision) {
@@ -42,7 +41,7 @@ public class GameHelper {
             if(player.checkStatus().equals("WIN")){
                 winLose(player,"WIN");
             }
-            if(player.checkStatus().equals("LOSE")){
+            else if(player.checkStatus().equals("LOSE")){
                 winLose(player,"LOSE");
             }
         }
@@ -50,7 +49,6 @@ public class GameHelper {
     }
 
     public List<Integer> getStandingHandSums(List<Player> players){
-        System.out.println(); // Spacing only
         List<Integer> result=new ArrayList<>();
         for(Player player:players){
             if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
@@ -65,18 +63,17 @@ public class GameHelper {
 
     public void compareLiveHands() throws InterruptedException {
         players.forEach(System.out::println);
-
-        Thread.sleep(6000);
+        Thread.sleep(5000);
         List<Integer> handTotals=getStandingHandSums(players);
         //If dealer has the highest hand
         Integer maxHand=Collections.max(handTotals);
-        Integer dealerTotal=handTotals.get(handTotals.size()-1);
-        if(maxHand.equals(dealerTotal) && Collections.frequency(handTotals,maxHand)==1){
+        Integer dealerHand=handTotals.get(handTotals.size()-1);
+        if(maxHand.equals(dealerHand) && Collections.frequency(handTotals,maxHand)==1){
             winLose(dealer,"WIN");
         }
         else{ //else everyone who have higher hand than dealer wins
             for(int i=0;i<handTotals.size()-1;i++){
-                if(handTotals.get(i)>=dealerTotal){
+                if(handTotals.get(i)>=dealerHand){
                     winLose(players.get(i),"WIN");
                 }
                 else{
@@ -86,32 +83,31 @@ public class GameHelper {
         }
     }
 
-
     public void winLose(Player player, String string)  {
         if(player.isDealer()){
             System.out.println("\n             ********************************************");
             players.forEach(System.out::println);
-            System.out.println("\n             ********************************************!");
-            System.out.println("\nDealer "+ Dealer.NAME+ " "+ string+"S");
+            System.out.println("\n             ********************************************");
             if(string.equals("LOSE")){
-                System.out.println("\n"+players.get(0).getName()+" WINS");
-                System.out.println(players.get(0));
+                List<Player> winnerList= players.stream()
+                        .filter(player1 -> player1.checkStatus().equals("LIVE") && !player1.isDealer())
+                        .collect(Collectors.toList());
+                System.out.println("\nStanding Winners.");
+                winnerList.forEach(System.out::println);
             }
-            System.out.println(); // Spacing only
-            System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
-            System.exit(0);
+            else if (player.checkTotal().get(0).equals(21)){
+                System.out.println("***********BLACK JACK*************");
+                System.out.println("\nDealer "+ Dealer.NAME+ " "+ string+"S");
+            }
+            else{
+                System.out.println("\nDealer "+ Dealer.NAME+ " "+ string+"S");
+            }
         }
         else{
             System.out.println("\n"+player.getName()+" "+ string+"S");
             System.out.println(player);
-            players.remove(player);
         }
-        if(players.size()==1){
-//            System.out.println("\n             ********************************************");
-//            players.forEach(System.out::println);
-//            System.out.println("\n             ********************************************");
-            System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
-            System.exit(0);
-        }
+        System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
+        System.exit(0);
     }
 }

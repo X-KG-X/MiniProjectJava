@@ -9,8 +9,8 @@ public class DeckTest {
     @Test
     public void testNewDeck() {
 
-        assertEquals(52,Deck.newDeck().size());
+        assertEquals(52,Deck.createDeck().size());
 
-        System.out.println(Deck.newDeck().get(51));
+        System.out.println(Deck.createDeck().get(51));
     }
 }

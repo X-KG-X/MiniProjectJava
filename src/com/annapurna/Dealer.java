@@ -1,13 +1,14 @@
 package com.annapurna;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class Dealer extends Player{
+class Dealer extends Player{
     //STATIC FIELDS
     public static final String NAME="Polly";
 
     //INSTANT FIELDS
-    private List<Card> deck= Deck.newDeck();
+    private List<Card> deck= Deck.createDeck();
 
     //BUSINESS METHODS
     public Boolean hit(Player player){
