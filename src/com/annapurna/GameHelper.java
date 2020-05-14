@@ -40,11 +40,11 @@ class GameHelper {
                 break;
             }
             if(player.checkStatus().equals("WIN")){
-                winLose(player,"WIN");
+                displayPlayerWinLose(player,"WIN");
                 it.remove();
             }
             else if(player.checkStatus().equals("LOSE")){
-                winLose(player,"LOSE");
+                displayPlayerWinLose(player,"LOSE");
                 it.remove();
             }
         }
@@ -77,21 +77,21 @@ class GameHelper {
         Integer maxHand=Collections.max(handTotals);
         Integer dealerHand=handTotals.get(handTotals.size()-1);
         if(maxHand.equals(dealerHand) && Collections.frequency(handTotals,maxHand)==1){
-            winLose(dealer,"WIN");
+            displayPlayerWinLose(dealer,"WIN");
         }
         else{ //else everyone who have higher hand than dealer wins
             for(int i=0;i<handTotals.size()-1;i++){
                 if(handTotals.get(i)>=dealerHand){
-                    winLose(players.get(i),"WIN");
+                    displayPlayerWinLose(players.get(i),"WIN");
                 }
                 else{
-                    winLose(players.get(i),"LOSE");
+                    displayPlayerWinLose(players.get(i),"LOSE");
                 }
             }
         }
     }
 
-    public void winLose(Player player, String string)  {
+    public void displayPlayerWinLose(Player player, String string)  {
         if(player.isDealer()){
             System.out.println("\n             ********************************************");
             players.forEach(System.out::println);

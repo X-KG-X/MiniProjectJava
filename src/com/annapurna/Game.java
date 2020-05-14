@@ -35,7 +35,7 @@ public class Game {
             if (!player.isDealer()) {
                 status = player.checkStatus();
                 if (status.equals("WIN")) {
-                    gameHelper.winLose(player,"WIN");
+                    gameHelper.displayPlayerWinLose(player,"WIN");
                     it.remove();
                 } else {// "LIVE"
                     gameHelper.runPlayerTurn(player,it);
@@ -44,7 +44,7 @@ public class Game {
             else { //Dealer's turn
                 status=player.checkStatus();
                 if(status.equals("WIN")){
-                    gameHelper.winLose(player,"WIN");
+                    gameHelper.displayPlayerWinLose(player,"WIN");
                 }
                 else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
                     while(player.checkStatus().equals("LIVE")){
@@ -58,10 +58,10 @@ public class Game {
                             System.exit(0);
                         }
                         if(player.checkStatus().equals("WIN")){
-                            gameHelper.winLose(player,"WIN");
+                            gameHelper.displayPlayerWinLose(player,"WIN");
                         }
                         else if(player.checkStatus().equals("LOSE")){
-                            gameHelper.winLose(player,"LOSE");
+                            gameHelper.displayPlayerWinLose(player,"LOSE");
                         }
                     }
                 }

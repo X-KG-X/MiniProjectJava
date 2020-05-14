@@ -5,7 +5,7 @@ import java.util.List;
 
 class Dealer extends Player{
     //STATIC FIELDS
-    public static final String NAME="Polly";
+    public static final String NAME="POLLY";
 
     //INSTANT FIELDS
     private List<Card> deck= Deck.createDeck();
