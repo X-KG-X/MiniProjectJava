@@ -13,8 +13,7 @@ public class GameConsoleClient {
             return;
         }
         Game game= GameFactory.createGame();
-
-        game.startGameAlt();
+        game.startGame();
 
     }
 }

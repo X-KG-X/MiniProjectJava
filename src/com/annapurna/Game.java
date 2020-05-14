@@ -24,49 +24,8 @@ public class Game {
     Game(){}
 
     //BUSINESS METHODS
-//    public void startGame() throws InterruptedException {
-//        setUpGame();
-//        GameHelper gameHelper = new GameHelper(players, dealer, this);
-//        for (Player player : getPlayers()) {
-//            String status = null;
-//            if (!player.isDealer()) { //Player's turn
-//                status = player.checkStatus();
-//                if (status.equals("WIN")) {
-//                    gameHelper.winLose(player,"WIN");
-////                } else if (status.equals("LOSE")) {
-////                    gameHelper.winLose(player,"LOSE");
-//                } else {// "LIVE"
-//                    gameHelper.playTurn(player);
-//                }
-//            }
-//            else { //Dealer's turn
-//                status=player.checkStatus();
-//                if(status.equals("WIN")){
-//                    gameHelper.winLose(player,"WIN");
-////                }
-////                else if(status.equals("LOSE")){
-////                    gameHelper.winLose(player,"LOSE");
-//                }
-//                else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
-//                    while(player.checkStatus().equals("LIVE")){
-//                        boolean decision=dealer.hit(player);
-//                        if(!decision){
-//                            System.out.println("Up next compare all the remaining hands!");
-//                            gameHelper.compareLiveHands();
-//                        }
-//                        if(player.checkStatus().equals("WIN")){
-//                            gameHelper.winLose(player,"WIN");
-//                        }
-//                        else if(player.checkStatus().equals("LOSE")){
-//                            gameHelper.winLose(player,"LOSE");
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
-    public void startGameAlt() throws InterruptedException {
+    public void startGame() throws InterruptedException {
         setUpGame();
         GameHelper gameHelper = new GameHelper(players, dealer, this);
         Iterator<Player> it =players.iterator();
@@ -78,8 +37,6 @@ public class Game {
                 if (status.equals("WIN")) {
                     gameHelper.winLose(player,"WIN");
                     it.remove();
-//                } else if (status.equals("LOSE")) {
-//                    gameHelper.winLose(player,"LOSE");
                 } else {// "LIVE"
                     gameHelper.playTurn(player,it);
                 }
@@ -88,17 +45,15 @@ public class Game {
                 status=player.checkStatus();
                 if(status.equals("WIN")){
                     gameHelper.winLose(player,"WIN");
-                    it.remove();
-//                }
-//                else if(status.equals("LOSE")){
-//                    gameHelper.winLose(player,"LOSE");
                 }
                 else{ // Dealer "LIVE" -->needs to hit till his/her total is >=17
                     while(player.checkStatus().equals("LIVE")){
                         boolean decision=dealer.hit(player);
                         if(!decision){
-                            System.out.println("Up next compare all the remaining hands!");
-                            gameHelper.compareLiveHands();
+                            if(players.size()>1){
+                                System.out.println("\nUp next compare all the remaining hands!");
+                                gameHelper.compareLiveHands();
+                            }
                             System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
                             System.exit(0);
                         }
@@ -118,6 +73,8 @@ public class Game {
         //Welcome Message
         System.out.println("****************************************************************************");
         System.out.println("WELCOME TO ANNAPURNA CASINO. BLACKJACK ADAPTATION PRESENTED BY TEAM JAVA2K!");
+        System.out.println("             ********************************************");
+        System.out.println("                             BASIC RULE\n-> The goal of blackjack is to beat the dealer's hand without going over 21.\n-> Face cards are worth 10.  For players Aces are worth 1 or 11, whichever makes a better hand.\n-> Each player starts with two cards, one of the dealer's cards is hidden until the end.\n-> To 'Hit' is to ask for another card. To 'Stand' is to hold your total and end your turn.\n-> If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.\n-> If you are dealt 21 from the start (Ace & 10), you got a blackjack.\n-> Dealer will hit until his/her cards total 17 or higher.\n");
         System.out.println("             ********************************************");
         //Get list of players
         List<Player> players=getPlayerListFromConsole();

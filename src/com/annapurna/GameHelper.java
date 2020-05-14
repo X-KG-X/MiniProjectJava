@@ -54,8 +54,13 @@ class GameHelper {
     public List<Integer> getStandingHandSums(List<Player> players){
         List<Integer> result=new ArrayList<>();
         for(Player player:players){
-            if(!player.isDealer() && player.getHand().contains(Card.Rank.ACE)){
-                result.add(Math.max(player.checkTotal().get(0),player.checkTotal().get(1)));
+            if(!player.isDealer()){
+                if(player.checkTotal().get(0)>21){
+                    result.add(player.checkTotal().get(1));
+                }
+                else {
+                    result.add(player.checkTotal().get(0));
+                }
             }
             else{
                 result.add(player.checkTotal().get(0));
@@ -100,7 +105,7 @@ class GameHelper {
                 winnerList.forEach(System.out::println);
             }
             else if (player.checkTotal().get(0).equals(21)){
-                System.out.println("***********BLACK JACK*************");
+                System.out.println("***********BLACK JACK*************!");
                 System.out.println("\nDealer "+ Dealer.NAME+ " "+ string+"S");
             }
             else{
@@ -112,7 +117,5 @@ class GameHelper {
             System.out.println(player);
 
         }
-//        System.out.println("\nGAME OVER! GOOD BYE! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :)");
-//        System.exit(0);
     }
 }

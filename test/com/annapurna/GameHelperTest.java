@@ -69,31 +69,42 @@ public class GameHelperTest {
     }
 
     @Test
-    public void testWinLose(){
+    public void testWinLose() throws InterruptedException {
         List<Player> players=new ArrayList<>();
         players.add(new Player("KG"));
 
         Game game=new Game(players);
 
-        Card c1=new Card(Card.Rank.ACE, Card.Suit.DIAMOND);
-        Card c2=new Card(Card.Rank.SEVEN, Card.Suit.DIAMOND);
-        List<Card> dealerHand=new ArrayList<>();
-        dealerHand.add(c1);
-        dealerHand.add(c2);
-        Card c3=new Card(Card.Rank.TEN, Card.Suit.DIAMOND);
+        Card c1=new Card(Card.Rank.SIX, Card.Suit.DIAMOND);
+        Card c2=new Card(Card.Rank.TEN, Card.Suit.DIAMOND);
+        Card c3=new Card(Card.Rank.ACE, Card.Suit.DIAMOND);
         Card c4=new Card(Card.Rank.TWO, Card.Suit.DIAMOND);
-        Card c5=new Card(Card.Rank.EIGHT, Card.Suit.DIAMOND);
         List<Card> playerHand=new ArrayList<>();
+        playerHand.add(c1);
+        playerHand.add(c2);
         playerHand.add(c3);
         playerHand.add(c4);
-        playerHand.add(c5);
+
+
+;
+        Card c5=new Card(Card.Rank.JACK, Card.Suit.DIAMOND);
+        Card c6=new Card(Card.Rank.KING, Card.Suit.DIAMOND);
+        List<Card> dealerHand=new ArrayList<>();
+        dealerHand.add(c5);
+        dealerHand.add(c6);
 
         game.getPlayers().get(0).setHand(playerHand);
         game.getDealer().setHand(dealerHand);
 
         GameHelper gameHelper= new GameHelper(game.getPlayers(),game.getDealer(),game);
+//
+//        gameHelper.winLose(game.getPlayers().get(1),"WIN");
+        System.out.println(gameHelper.getStandingHandSums(players));
 
-        gameHelper.winLose(game.getPlayers().get(1),"LOSE");
+
+        gameHelper.compareLiveHands();
+
+
     }
 
 }
