@@ -3,7 +3,7 @@ package com.annapurna;
 import java.util.ArrayList;
 import java.util.List;
 
-class Player implements Rules {
+class Player {
     //INSTANT FIELDS
     private String name;
     private List<Card> hand=new ArrayList<>();

@@ -26,19 +26,19 @@ public class Game {
     //BUSINESS METHODS
 
     public void startGame() throws InterruptedException {
-        setUpGame();
+        setUpGame(); //calling game set up
         GameHelper gameHelper = new GameHelper(players, dealer, this);
-        Iterator<Player> it =players.iterator();
+        Iterator<Player> it =players.iterator(); // Iterator used instead foreach loop to  avoid ConcurrentModificationException
         while(it.hasNext()){
             String status = null;
             Player player=it.next();
-            if (!player.isDealer()) { //Player's turn
+            if (!player.isDealer()) {
                 status = player.checkStatus();
                 if (status.equals("WIN")) {
                     gameHelper.winLose(player,"WIN");
                     it.remove();
                 } else {// "LIVE"
-                    gameHelper.playTurn(player,it);
+                    gameHelper.runPlayerTurn(player,it);
                 }
             }
             else { //Dealer's turn
@@ -74,7 +74,7 @@ public class Game {
         System.out.println("****************************************************************************");
         System.out.println("WELCOME TO ANNAPURNA CASINO. BLACKJACK ADAPTATION PRESENTED BY TEAM JAVA2K!");
         System.out.println("             ********************************************");
-        System.out.println("                             BASIC RULE\n-> The goal of blackjack is to beat the dealer's hand without going over 21.\n-> Face cards are worth 10.  For players Aces are worth 1 or 11, whichever makes a better hand.\n-> Each player starts with two cards, one of the dealer's cards is hidden until the end.\n-> To 'Hit' is to ask for another card. To 'Stand' is to hold your total and end your turn.\n-> If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.\n-> If you are dealt 21 from the start (Ace & 10), you got a blackjack.\n-> Dealer will hit until his/her cards total 17 or higher.\n");
+        System.out.println("                             BASIC RULE\n-> The goal of blackjack is to beat the dealer's hand without going over 21.\n-> Face cards are worth 10.  For players Aces are worth 1 or 11, whichever makes a better hand.\n-> Each player starts with two cards, one of the dealer's cards is hidden until the end.\n-> To 'Hit' is to ask for another card. To 'Stand' is to hold your total and end your turn.\n-> If you go over 21 you bust, and the dealer wins regardless of the dealer's hand.\n-> If your hands totals 21, you got a blackjack.*\n-> Dealer will hit until his/her cards total 17 or higher.\n");
         System.out.println("             ********************************************");
         //Get list of players
         List<Player> players=getPlayerListFromConsole();
@@ -89,7 +89,7 @@ public class Game {
         Thread.sleep(2000);
 
         //Print the hands dealt
-        game.firstHandDisplay();
+        game.displayInitialHands();
     }
 
     public int getPlayerCountFromConsole(){
@@ -125,7 +125,7 @@ public class Game {
         return players;
     }
 
-    public void firstHandDisplay(){
+    public void displayInitialHands(){
         for(Player player:getPlayers()){
             if(player.isDealer()){
                 System.out.println(Dealer.NAME+"'s hand=["+getDealer().getHand().get(0)+",{XXXXXXXXXXX}]\n");

@@ -19,7 +19,7 @@ class GameHelper {
         this.game=game;
     }
 
-    public void playTurn(Player player, Iterator<Player> it){
+    public void runPlayerTurn(Player player, Iterator<Player> it){
         while (player.checkStatus().equals("LIVE")) {
             while(true){
                 System.out.println(player);
@@ -77,7 +77,6 @@ class GameHelper {
         Integer maxHand=Collections.max(handTotals);
         Integer dealerHand=handTotals.get(handTotals.size()-1);
         if(maxHand.equals(dealerHand) && Collections.frequency(handTotals,maxHand)==1){
-            System.out.println(Collections.frequency(handTotals,maxHand));
             winLose(dealer,"WIN");
         }
         else{ //else everyone who have higher hand than dealer wins
@@ -115,7 +114,6 @@ class GameHelper {
         else{
             System.out.println("\n"+player.getName()+" "+ string+"S");
             System.out.println(player);
-
         }
     }
 }
