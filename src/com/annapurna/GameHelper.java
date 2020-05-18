@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 class GameHelper {
     public static Console console=System.console();
+
     private List<Player> players;
     private Dealer dealer;
     private Game game;
@@ -19,7 +20,7 @@ class GameHelper {
         this.game=game;
     }
 
-    public void runPlayerTurn(Player player, Iterator<Player> it){
+    void runPlayerTurn(Player player, Iterator<Player> it){
         while (player.checkStatus().equals("LIVE")) {
             while(true){
                 System.out.println(player);
@@ -51,7 +52,7 @@ class GameHelper {
 
     }
 
-    public List<Integer> getStandingHandSums(List<Player> players){
+    List<Integer> getStandingHandSums(List<Player> players){
         List<Integer> result=new ArrayList<>();
         for(Player player:players){
             if(!player.isDealer()){
@@ -69,7 +70,7 @@ class GameHelper {
         return result;
     }
 
-    public void compareLiveHands() throws InterruptedException {
+    void compareLiveHands() throws InterruptedException {
         players.forEach(System.out::println);
         Thread.sleep(5000);
         List<Integer> handTotals=getStandingHandSums(players);
@@ -91,7 +92,7 @@ class GameHelper {
         }
     }
 
-    public void displayPlayerWinLose(Player player, String string)  {
+    void displayPlayerWinLose(Player player, String string)  {
         if(player.isDealer()){
             System.out.println("\n             ********************************************");
             players.forEach(System.out::println);

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class GameFactory {
     private GameFactory(){}
+
     public static Game createGame(List<Player> players){
         Game game=null;
         if(!players.isEmpty()){

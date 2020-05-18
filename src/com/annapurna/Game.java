@@ -24,7 +24,6 @@ public class Game {
     Game(){}
 
     //BUSINESS METHODS
-
     public void startGame() throws InterruptedException {
         setUpGame(); //calling game set up
         GameHelper gameHelper = new GameHelper(players, dealer, this);
@@ -69,7 +68,7 @@ public class Game {
         }
     }
 
-    public void setUpGame() throws InterruptedException {
+    private void setUpGame() throws InterruptedException {
         //Welcome Message
         System.out.println("****************************************************************************");
         System.out.println("WELCOME TO ANNAPURNA CASINO. BLACKJACK ADAPTATION PRESENTED BY TEAM JAVA2K!");
@@ -92,7 +91,7 @@ public class Game {
         game.displayInitialHands();
     }
 
-    public int getPlayerCountFromConsole(){
+    private int getPlayerCountFromConsole(){
         int playerCount;
         while (true) {
             try {
@@ -108,7 +107,7 @@ public class Game {
         return playerCount;
     }
 
-    public List<Player> getPlayerListFromConsole(){
+    private List<Player> getPlayerListFromConsole(){
         int playerCnt=getPlayerCountFromConsole();
         for (int i = 0; i < playerCnt; i++) {
             Player player;
@@ -125,7 +124,7 @@ public class Game {
         return players;
     }
 
-    public void displayInitialHands(){
+    private void displayInitialHands(){
         for(Player player:getPlayers()){
             if(player.isDealer()){
                 System.out.println(Dealer.NAME+"'s hand=["+getDealer().getHand().get(0)+",{XXXXXXXXXXX}]\n");

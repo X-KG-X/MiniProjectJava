@@ -22,7 +22,7 @@ public class DealerTest {
 
     @Test
     public void testDealerStaticName(){
-        assertEquals("Polly", Dealer.NAME);
+        assertEquals("POLLY", Dealer.NAME);
     }
 
     @Test

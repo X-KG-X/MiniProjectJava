@@ -25,7 +25,7 @@ class Player {
         Integer sum=0;
         Integer alternateSum=0;
         for(var card: getHand()){
-            if (card.getRank()== Card.Rank.ACE){
+            if (card.getRank()== Card.Rank.ACE){ //for players ACE can be 1 or 11
                 alternateSum+=1;
             }
             else {
